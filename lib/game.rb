@@ -1,22 +1,31 @@
 require 'console_io'
+require 'board'
+require 'pry'
 
 class Game
+	attr_accessor :move
 
 	def initialize
-	@console_io = ConsoleIo.new
+		@console_io = ConsoleIo.new
+		@board = Board.new
 	end
 
-	def setup_game
-		@console_io.display_welcome_message
-		@console_io.display_empty_gameboard
-		until valid_gamepiece?
-			@console_io.display_invalid_gamepiece
-		end
-
+	def run
+		prompt_for_move
+		place_move
+		print_board
 	end
 
-	def valid_gamepiece?
-		["x","o"].include? @console_io.grab_gamepiece
+	def print_board
+		@console_io.display_gameboard
+	end
+
+	def prompt_for_move
+		@move = @console_io.prompt_for_move
+	end
+
+	def place_move
+		@board.place_move("x", @move.to_i)
 	end
 
 end

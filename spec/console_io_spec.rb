@@ -6,32 +6,26 @@ describe ConsoleIo do
 		subject.output = StringIO.new
 	}
 
-	describe '#display_welcome_message' do
-		it 'should display a welcome message when the game starts' do
-	  	subject.should_receive(:display)
-	  	subject.display_welcome_message
+		it 'displays a message' do
+	  	subject.output.should_receive(:puts)
+	  	subject.display("Hi")
 		end
-	end
 
-	describe '#display_empty_gameboard' do
-		it 'should display an empty gameboard when the game starts' do
-			subject.should_receive(:display)
-			subject.display_empty_gameboard
+		it 'displays a message and accepts input' do
+			subject.output.should_receive(:puts).with("Hi")
+			subject.input.should_receive(:gets).and_return("hello\n")
+			subject.prompt("Hi")
 		end
-	end
 
-	describe '#display_invalid_gamepiece' do
-		it 'should display an invalid gamepiece message when the gamepiece is not an x or o' do
+		it 'displays a gameboard' do
 			subject.should_receive(:display)
-			subject.display_invalid_gamepiece
-		end	
-	end
+			subject.display_gameboard
+		end
 
-	describe '#grab_gamepiece' do
-		it 'should prompt the player to choose between x and o' do
-			subject.should_receive(:prompt)
-			subject.grab_gamepiece
-		end	
-	end
+		it 'prompts for a move' do
+			subject.output.should_receive(:puts).with("Please enter your move (1-9):")
+			subject.input.should_receive(:gets).and_return("9\n")
+			subject.prompt_for_move
+		end		
 
 end
