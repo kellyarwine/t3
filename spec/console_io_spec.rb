@@ -1,10 +1,13 @@
-require 'console_io'
+require 'spec_helper'
 
 describe ConsoleIo do
 	before {
 		subject.input = StringIO.new
 		subject.output = StringIO.new
 	}
+
+	let(:board) { Board.new }
+	let(:subject) { ConsoleIo.new(board) }
 
 		it 'displays a message' do
 	  	subject.output.should_receive(:puts)

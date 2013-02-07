@@ -1,4 +1,4 @@
-require 'player'
+require 'spec_helper'
 
 describe Player do
 	it 'has a piece' do

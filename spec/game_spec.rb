@@ -1,31 +1,28 @@
-require 'game'
+require 'spec_helper'
 
 describe Game do
-	let!(:console_io) { ConsoleIo.new }
-	let!(:board) { Board.new }
+	let(:board) { Board.new }
+	let(:console_io) {ConsoleIo.new(board) }
 
 	it "prompts for move, places move and prints board when the game runs" do
-		subject.should_receive(:prompt_for_move)
-		subject.should_receive(:place_move)
-		subject.should_receive(:print_board)
+		subject.should_receive(:prompt_for_move).exactly(9)
+		subject.should_receive(:place_move).exactly(9)
+		subject.should_receive(:print_board).exactly(9)
 		subject.run
 	end
 
 	it "displays a gameboard" do
-		ConsoleIo.stub(:new) { console_io }
-		console_io.should_receive(:display_gameboard)
+		subject.console_io.should_receive(:display_gameboard)
 		subject.print_board
 	end
 
 	it "prompts the user for a move" do
-		ConsoleIo.stub(:new) { console_io }
-		console_io.should_receive(:prompt_for_move)
+		subject.console_io.should_receive(:prompt_for_move)
 		subject.prompt_for_move
 	end
 
 	it "prints the board with the move" do
-		Board.stub(:new) { board }
-		board.should_receive(:place_move)
+		subject.board.should_receive(:place_move)
 		subject.place_move
 	end		
 

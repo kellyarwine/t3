@@ -3,17 +3,19 @@ require 'board'
 require 'pry'
 
 class Game
-	attr_accessor :move
+	attr_accessor :move, :board, :console_io
 
 	def initialize
-		@console_io = ConsoleIo.new
 		@board = Board.new
+		@console_io = ConsoleIo.new(@board)
 	end
 
 	def run
-		prompt_for_move
-		place_move
-		print_board
+		for i in 1..9
+			prompt_for_move
+			place_move
+			print_board
+		end
 	end
 
 	def print_board

@@ -1,9 +1,9 @@
 class ConsoleIo
 	attr_accessor :input, :output, :gamepiece
 
-	def initialize(input = nil, output = nil)
+	def initialize(board, input = nil, output = nil)
+		@board = board
 		@input, @output = input, output
-		@board = Board.new
 	end
 	
 	def input
