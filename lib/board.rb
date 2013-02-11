@@ -1,7 +1,8 @@
 class Board
-	attr_accessor :spaces
-	SQUARE_LENGTH = 5
-	BLANK_SQUARE = " "
+	attr_accessor :spaces, :size
+
+	SPACE_LENGTH = 5
+	BLANK_SPACE = " "
 	GRID_HORIZONTAL_LINE = "-"
 	GRID_CROSSHAIRS = "+"
 	GRID_VERTICAL_LINE = "|"
@@ -11,12 +12,16 @@ class Board
 		@spaces = Array.new(9)
 	end
 
-	def place_move(marker, square)
-		@spaces[square-1] = marker
+	def size
+		@spaces.count
 	end
 
-	def valid_move?(square)
-		square <= @spaces.size && @spaces[square-1].nil?
+	def place_move(marker, space)
+		@spaces[space-1] = marker
+	end
+
+	def valid_move?(space)
+		space <= @spaces.size && @spaces[space-1].nil?
 	end
 
 	def construct_gameboard
@@ -30,30 +35,31 @@ class Board
 		gameboard << generate_margin
 	end
 
-	def generate_row(square1,square2,square3)
-		square1 = BLANK_SQUARE if square1.nil?
-		square2 = BLANK_SQUARE if square2.nil?
-		square3 = BLANK_SQUARE if square3.nil?
-		"  #{square1}  |  #{square2}  |  #{square3}  " + LINE_END
+	def generate_row(space1,space2,space3)
+		"  #{space(space1)}  |  #{space(space2)}  |  #{space(space3)}  " + LINE_END
+	end
+
+	def space(space_number)
+		space_number.nil? ? BLANK_SPACE : space_number
 	end
 
 	def generate_margin
 		margin = ""
-		margin << BLANK_SQUARE * SQUARE_LENGTH
+		margin << BLANK_SPACE * SPACE_LENGTH
 		margin << GRID_VERTICAL_LINE
-		margin << BLANK_SQUARE * SQUARE_LENGTH
+		margin << BLANK_SPACE * SPACE_LENGTH
 		margin << GRID_VERTICAL_LINE
-		margin << BLANK_SQUARE * SQUARE_LENGTH
+		margin << BLANK_SPACE * SPACE_LENGTH
 		margin << "\n"
 	end
 
 	def generate_horizontal_grid
 		grid = ""
-		grid << GRID_HORIZONTAL_LINE * SQUARE_LENGTH
+		grid << GRID_HORIZONTAL_LINE * SPACE_LENGTH
 		grid << GRID_CROSSHAIRS
-		grid << GRID_HORIZONTAL_LINE * SQUARE_LENGTH
+		grid << GRID_HORIZONTAL_LINE * SPACE_LENGTH
 		grid << GRID_CROSSHAIRS
-		grid << GRID_HORIZONTAL_LINE * SQUARE_LENGTH
+		grid << GRID_HORIZONTAL_LINE * SPACE_LENGTH
 		grid << LINE_END
 	end
 

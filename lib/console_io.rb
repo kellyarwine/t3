@@ -18,17 +18,21 @@ class ConsoleIo
 		output.puts message
 	end
 
-	def prompt(message)
+	def display_and_get(message)
 		display(message)
-		input.gets.chomp
+		input.gets.chomp.to_i
 	end
 
 	def display_gameboard
 		display(@board.construct_gameboard)
 	end
+	
+	def display_and_get_move
+		display_and_get("Please enter a move (1-9):")
+	end
 
-	def prompt_for_move
-		prompt("Please enter your move (1-9):")
+	def display_invalid_move
+		display("Invalid move.  Please try again.")
 	end
 
 end

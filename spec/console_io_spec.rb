@@ -17,7 +17,7 @@ describe ConsoleIo do
 		it 'displays a message and accepts input' do
 			subject.output.should_receive(:puts).with("Hi")
 			subject.input.should_receive(:gets).and_return("hello\n")
-			subject.prompt("Hi")
+			subject.display_and_get("Hi")
 		end
 
 		it 'displays a gameboard' do
@@ -25,10 +25,15 @@ describe ConsoleIo do
 			subject.display_gameboard
 		end
 
-		it 'prompts for a move' do
-			subject.output.should_receive(:puts).with("Please enter your move (1-9):")
-			subject.input.should_receive(:gets).and_return("9\n")
-			subject.prompt_for_move
-		end		
+		xit 'prompts for a move' do
+			subject.should_receive(:display)
+			subject.should_receive(:gets).and_return(9)
+			subject.display_and_get_move
+		end
+
+		it 'displays an invalid move message' do
+			subject.should_receive(:display)
+			subject.display_invalid_move
+		end
 
 end
