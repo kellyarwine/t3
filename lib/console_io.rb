@@ -23,16 +23,20 @@ class ConsoleIo
 		input.gets.chomp.to_i
 	end
 
+	def display_welcome_message
+		display("\nWelome to T3!  Get ready to lose.\n\n")
+	end
+
 	def display_gameboard
 		display(@board.construct_gameboard)
 	end
 	
-	def display_and_get_move
-		display_and_get("Please enter a move (1-9):")
+	def display_and_get_move(player_piece)
+		player_piece == "x" ? display_and_get("Player 1, please enter a move (1-9):") : display_and_get("Player 2, please enter a move (1-9):")
 	end
 
 	def display_invalid_move
 		display("Invalid move.  Please try again.")
 	end
 
-end
+end	
