@@ -20,10 +20,6 @@ class Board
 		@spaces[space-1] = marker
 	end
 
-	def valid_move?(space)
-		space <= @spaces.size && @spaces[space-1].nil?
-	end
-
 	def construct_gameboard
 		gameboard = ""
 		gameboard << generate_margin

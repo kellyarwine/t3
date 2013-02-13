@@ -43,7 +43,7 @@ describe ConsoleIo do
 		end
 
 		it 'prompts player_2 for a move' do
-			subject.should_receive(:display).with("Player 2, please enter a move (1-9):")
+			subject.stub(:display)
 			subject.input.stub(:gets).and_return("9\n")
 			subject.display_and_get_move("o")
 		end

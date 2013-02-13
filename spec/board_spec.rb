@@ -18,17 +18,6 @@ describe Board do
 		end
 	end
 
-	context "#valid_move?" do
-		it "doesn't allow a move to be placed if the space is occupied" do
-			subject.place_move("x",9)
-			subject.valid_move?(9).should == false
-		end
-
-		it "doesn't allow a square greater than board size" do
-			subject.valid_move?(10).should == false
-		end
-  end
-
   context "construct gameboard" do
 		it "constructs a horizontal grid line" do
 			subject.generate_horizontal_grid.should == "-----+-----+-----\n"

@@ -1,12 +1,14 @@
 require 'console_io'
 require 'board'
 require 'player'
+require 'game_rules'
 
 class Game
-	attr_accessor :move, :board, :console_io, :player_1, :player_2, :current_players, :current_player
+	attr_accessor :game_rules, :console_io, :board, :player_1, :player_2, :current_players, :current_player, :move
 
 	def initialize
 		@board = Board.new
+		@game_rules = GameRules.new(@board)
 		@console_io = ConsoleIo.new(@board)
 		@player_1 = Player.new("x")
 		@player_2 = Player.new("o")
@@ -16,14 +18,14 @@ class Game
 
 	def run
 		display_welcome_message
-		@board.size.times do
+		until @game_rules.game_over?
 			display_and_get_move
-			until valid_move?
+			while invalid_move?
 				display_invalid_move
 				display_and_get_move
 			end
 			place_move
-			print_board
+			display_gameboard
 			switch_current_player
 		end
 	end
@@ -32,7 +34,7 @@ class Game
 		@console_io.display_welcome_message
 	end
 
-	def print_board
+	def display_gameboard
 		@console_io.display_gameboard
 	end
 
@@ -44,8 +46,8 @@ class Game
 		@board.place_move(@current_player.piece, @move)
 	end
 
-	def valid_move?
-		@board.valid_move?(@move)
+	def invalid_move?
+		@game_rules.invalid_move?(@move)
 	end
 
 	def display_invalid_move
