@@ -1,8 +1,13 @@
 require 'spec_helper'
 
 describe Game do
-	let(:board) 			{ Board.new }
-	let(:console_io)	{ ConsoleIo.new(board) }
+	let(:board) 						{ double('Board')				}
+	let(:game_rules)				{ double('GameRules')		}
+	let(:console_io)				{ double('ConsoleIo')		}
+	let(:player_1)					{ Player.new("x")				}
+	let(:player_2)					{ Player.new("o")				}
+	let(:current_players)		{ [player_1, player_2]	}
+	let(:current_player)		{ player_1							}
 
 	context "#initialize" do
 		it "creates an instance of GameRules" do
@@ -35,93 +40,40 @@ describe Game do
 	end
 
 	context "#run" do
-		it "displays welecome message when the game is run" do
-			subject.should_receive(:display_welcome_message)
-			subject.game_rules.stub(:game_over? => true)
+		it "runs game loop once with move that's not invalid" do
+			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
+			subject.game_rules.should_receive(:game_over?).and_return(false,true)
+			subject.console_io.should_receive(:display_and_get_move).exactly(1).times
+			subject.game_rules.should_receive(:invalid_move?).and_return(false)
+			subject.board.should_receive(:place_move).exactly(1).times
+			subject.console_io.should_receive(:display_gameboard).exactly(1).times
+			subject.should_receive(:switch_current_player).exactly(1).times
 			subject.run
 		end
 
-		it "prompts for move when the game runs" do
-			subject.stub(:display_welcome_message)
-			subject.game_rules.stub(:game_over?).and_return(false,true)
-			subject.should_receive(:display_and_get_move)
-			subject.stub(:place_move)
-			subject.stub(:invalid_move? => false)
-			subject.stub(:display_gameboard)
+		it "runs game loop once with 1 invalid input" do
+			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
+			subject.game_rules.should_receive(:game_over?).and_return(false,true)
+			subject.console_io.should_receive(:display_and_get_move).exactly(2).times
+			subject.game_rules.should_receive(:invalid_move?).and_return(true, false)
+			subject.console_io.should_receive(:display_invalid_move).exactly(1).times
+			subject.board.should_receive(:place_move).exactly(1).times
+			subject.console_io.should_receive(:display_gameboard).exactly(1).times
+			subject.should_receive(:switch_current_player).exactly(1).times
 			subject.run
 		end
 
-		it "places move when the game runs" do
-			subject.stub(:display_welcome_message)
-			subject.game_rules.stub(:game_over?).and_return(false,true)
-			subject.stub(:display_and_get_move)
-			subject.should_receive(:place_move)
-			subject.stub(:invalid_move? => false)
-			subject.stub(:display_gameboard)
+		it "runs game loop 4 times with 2 invalid inputs" do
+			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
+			subject.game_rules.should_receive(:game_over?).and_return(false,false,false,false,true)
+			subject.console_io.should_receive(:display_and_get_move).exactly(6).times
+			subject.game_rules.should_receive(:invalid_move?).and_return(true,false,false,true,false,false)
+			subject.console_io.should_receive(:display_invalid_move).exactly(2).times
+			subject.board.should_receive(:place_move).exactly(4).times
+			subject.console_io.should_receive(:display_gameboard).exactly(4).times
+			subject.should_receive(:switch_current_player).exactly(4).times
 			subject.run
 		end
-
-		it "prints board when the game runs" do
-			subject.stub(:display_welcome_message)
-			subject.game_rules.stub(:game_over?).and_return(false,true)
-			subject.stub(:display_and_get_move)
-			subject.stub(:place_move)
-			subject.stub(:invalid_move? => false)
-			subject.should_receive(:display_gameboard)
-			subject.run
-		end
-
-		it "validates a move when the game runs" do
-			subject.stub(:display_welcome_message)
-			subject.game_rules.stub(:game_over?).and_return(false,true)			
-			subject.stub(:display_and_get_move)
-			subject.should_receive(:invalid_move?).and_return(false)
-			subject.stub(:place_move)
-			subject.stub(:display_gameboard)
-			subject.run
-		end
-
-		it "displays invalid move message when game runs and move is invalid" do
-			subject.stub(:display_welcome_message)
-			subject.game_rules.stub(:game_over?).and_return(false,true)
-			subject.stub(:display_and_get_move)
-			subject.stub(:invalid_move?).and_return(true,false)
-			subject.should_receive(:display_invalid_move)
-			subject.stub(:place_move)
-			subject.stub(:display_gameboard)
-			subject.run
-		end
-	end
-
-	it "displays welcome message" do
-		subject.console_io.should_receive(:display_welcome_message)
-		subject.display_welcome_message
-	end
-
-	it "displays a gameboard" do
-		subject.console_io.should_receive(:display_gameboard)
-		subject.display_gameboard
-	end
-
-	it "prompts the user for a move and gets move" do
-		subject.console_io.should_receive(:display_and_get_move).with(subject.current_player.piece)
-		subject.display_and_get_move
-	end
-
-	it "displays the gameboard with the move" do
-		subject.board.should_receive(:place_move)
-		subject.place_move
-	end
-
-	it "validates a player move" do
-		subject.move = 9
-		subject.game_rules.should_receive(:invalid_move?)
-		subject.invalid_move?
-	end
-
-	it "display an invalid move message" do
-		subject.console_io.should_receive(:display_invalid_move)
-		subject.display_invalid_move
 	end
 
 	context "#current_player" do
@@ -130,7 +82,8 @@ describe Game do
 			subject.current_player.should == subject.player_2
 		end
 
-		xit "sets the current player to player_2 when called twice" do
+		it "sets the current player to player_2 when called twice" do
+			subject.switch_current_player
 			subject.switch_current_player
 			subject.current_player.should == subject.player_1
 		end

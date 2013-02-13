@@ -79,17 +79,21 @@ describe GameRules do
 	end
 
 	context "#game_over?" do
-		it "retuns true when game is over" do
+		it "returns true when game is over" do
 			subject.board.spaces = ["x","x","o","o","x","o","x","o","x"]
 			subject.game_over?.should == true
 		end
 
-		it "retuns false when game is not over" do
+		it "returns false when game is not over" do
 			subject.board.spaces = ["x",nil,"o","o","x","o","x","o","x"]
 			subject.game_over?.should == false
 		end		
 	end
 
-	
+	it "returns true when a game is won" do
+		subject.game_win? == true
+	end
+
+
 
 end	
