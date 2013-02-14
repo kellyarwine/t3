@@ -4,10 +4,6 @@ describe Game do
 	let(:board) 						{ double('Board')				}
 	let(:game_rules)				{ double('GameRules')		}
 	let(:console_io)				{ double('ConsoleIo')		}
-	let(:player_1)					{ Player.new("x")				}
-	let(:player_2)					{ Player.new("o")				}
-	let(:current_players)		{ [player_1, player_2]	}
-	let(:current_player)		{ player_1							}
 
 	context "#initialize" do
 		it "creates an instance of GameRules" do
@@ -76,7 +72,7 @@ describe Game do
 		end
 	end
 
-	context "#current_player" do
+	context "#switch_current_player" do
 		it "sets the current player to player_1" do
 			subject.switch_current_player
 			subject.current_player.should == subject.player_2

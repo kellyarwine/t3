@@ -5,6 +5,15 @@ describe Board do
 		described_class.new.spaces.should eq(Array.new(9))
 	end
 
+	it "returns the number of spaces on the board" do
+		subject.size.should == 9
+	end
+
+	it "returns the number of spaces in the row/column" do
+		subject.spaces = [nil, nil, nil, nil, nil, nil, nil, nil,nil,nil,nil,nil,nil,nil,nil,nil]
+		subject.row_column_size.should == 4
+	end
+
 	context "#place_move" do
 		it "allows a piece to be set" do
 			subject.place_move("x",9)

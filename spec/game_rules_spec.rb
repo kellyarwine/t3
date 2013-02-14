@@ -91,9 +91,36 @@ describe GameRules do
 	end
 
 	it "returns true when a game is won" do
-		subject.game_win? == true
+		
 	end
 
+	it "returns an array of 3 arrays with the values from each row contained in one array" do
+		board.spaces = ["x","o","x","o","x","o","x","o","x"]
+		subject.rows.should == [["x","o","x"],["o","x","o"],["x","o","x"]]
+	end
 
+	it "returns an array of 3 arrays with the values from each column contained in one array" do
+		board.spaces = ["x","x","x","o","x","o","x","x","x"]
+		subject.columns.should == [["x","o","x"],["x","x","x"],["x","o","x"]]
+	end	
 
+	it "returns an array of 1 array with the values from the left diagonal" do
+		board.spaces = ["x","x","o","o","o","o","x","x","o"]
+		subject.left_diagonal.should == [["x","o","o"]]
+	end
+
+	it "returns an array of 1 array with the values from the right diagonal" do
+		board.spaces = ["x","x","o","o","o","o","x","x","o"]
+		subject.right_diagonal.should == [["o","o","x"]]
+	end
+
+	it "returns an array of 1 array with the values from the left diagonal" do
+		board.spaces = ["x","x","o","o","x","o","o","x","o"]
+		subject.left_diagonal.should == [["x","x","o"]]
+	end
+
+	it "returns an array of 1 array with the values from the right diagonal" do
+		board.spaces = ["x","x","o","o","x","o","o","x","o"]
+		subject.right_diagonal.should == [["o","x","x"]]
+	end		
 end	

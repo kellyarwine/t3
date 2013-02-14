@@ -1,5 +1,5 @@
 class Board
-	attr_accessor :spaces, :size
+	attr_accessor :spaces, :size, :row_column_size
 
 	SPACE_LENGTH = 5
 	BLANK_SPACE = " "
@@ -14,6 +14,10 @@ class Board
 
 	def size
 		@spaces.count
+	end
+
+	def row_column_size 
+		Math.sqrt(size).to_i
 	end
 
 	def place_move(marker, space)
