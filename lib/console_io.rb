@@ -39,4 +39,12 @@ class ConsoleIo
 		display("Invalid move.  Please try again.")
 	end
 
+	def display_win(player_piece)
+		display("#{player_piece} wins!")
+	end
+
+	def display_draw
+		display("The game is a draw.")
+	end
+
 end	

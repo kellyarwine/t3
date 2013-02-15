@@ -28,6 +28,7 @@ class Game
 			display_gameboard
 			switch_current_player
 		end
+		@game_rules.game_win != "" ? display_win(@game_rules.game_win) : display_draw
 	end
 
 	def display_welcome_message
@@ -58,4 +59,11 @@ class Game
 		@current_player = @current_players.reverse!.first
 	end
 
+	def display_win(player)
+		@console_io.display_win(player)
+	end
+
+	def display_draw
+		@console_io.display_draw
+	end
 end

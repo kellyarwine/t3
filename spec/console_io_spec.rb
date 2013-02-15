@@ -23,7 +23,7 @@ describe ConsoleIo do
 		it 'returns an integer' do
 			subject.stub(:display)
 			subject.input.stub(:gets).and_return("9\n")
-			subject.display_and_get("Hi").should == 9
+			subject.display_and_get("Hi").should == "9"
 		end
 
 		it 'displays a welcome message' do

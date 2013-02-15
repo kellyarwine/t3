@@ -36,7 +36,7 @@ describe Game do
 	end
 
 	context "#run" do
-		it "runs game loop once with move that's not invalid" do
+		it "runs game loop once with move that's not invalid until game is over" do
 			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
 			subject.game_rules.should_receive(:game_over?).and_return(false,true)
 			subject.console_io.should_receive(:display_and_get_move).exactly(1).times
@@ -44,10 +44,11 @@ describe Game do
 			subject.board.should_receive(:place_move).exactly(1).times
 			subject.console_io.should_receive(:display_gameboard).exactly(1).times
 			subject.should_receive(:switch_current_player).exactly(1).times
+			subject.console_io.should_receive(:display_draw).exactly(1).times			
 			subject.run
 		end
 
-		it "runs game loop once with 1 invalid input" do
+		it "runs game loop once with 1 invalid input until game is over" do
 			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
 			subject.game_rules.should_receive(:game_over?).and_return(false,true)
 			subject.console_io.should_receive(:display_and_get_move).exactly(2).times
@@ -56,10 +57,11 @@ describe Game do
 			subject.board.should_receive(:place_move).exactly(1).times
 			subject.console_io.should_receive(:display_gameboard).exactly(1).times
 			subject.should_receive(:switch_current_player).exactly(1).times
+			subject.console_io.should_receive(:display_draw).exactly(1).times			
 			subject.run
 		end
 
-		it "runs game loop 4 times with 2 invalid inputs" do
+		it "runs game loop 4 times with 2 invalid inputs until game is over" do
 			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
 			subject.game_rules.should_receive(:game_over?).and_return(false,false,false,false,true)
 			subject.console_io.should_receive(:display_and_get_move).exactly(6).times
@@ -68,8 +70,22 @@ describe Game do
 			subject.board.should_receive(:place_move).exactly(4).times
 			subject.console_io.should_receive(:display_gameboard).exactly(4).times
 			subject.should_receive(:switch_current_player).exactly(4).times
+			subject.console_io.should_receive(:display_draw).exactly(1).times
 			subject.run
 		end
+
+		it "runs game loop 4 times until game is won" do
+			subject.console_io.should_receive(:display_welcome_message).exactly(1).times
+			subject.game_rules.should_receive(:game_over?).and_return(false,false,false,false,true)
+			subject.console_io.should_receive(:display_and_get_move).exactly(4).times
+			subject.game_rules.should_receive(:invalid_move?).and_return(false,false,false,false)
+			subject.board.should_receive(:place_move).exactly(4).times
+			subject.console_io.should_receive(:display_gameboard).exactly(4).times
+			subject.should_receive(:switch_current_player).exactly(4).times
+			subject.game_rules.should_receive(:game_win).and_return("x","x")
+			subject.console_io.should_receive(:display_win).exactly(1).times
+			subject.run
+		end		
 	end
 
 	context "#switch_current_player" do

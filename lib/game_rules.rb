@@ -20,35 +20,45 @@ class GameRules
 	end
 
 	def game_over?
-		@board.spaces.select { |space| space == nil }.empty?
+		@board.spaces.select { |space| space == nil }.empty? || game_win != ""
 	end
 
-	def game_win?
-		# rows.map { |group| group.select { |space| space == "x" } }
-		# @board.spaces.select { |space| space == nil }.empty?
+	def game_win
+		groups = [row_contents, column_contents, left_diagonal_contents, right_diagonal_contents]
+		winner = ""
+
+		groups.map do |group|
+			if group.any? { |set| set == ["x","x","x"] }
+				winner << "x"
+			elsif group.any? { |set| set == ["o","o","o"] }
+				winner << "o"
+			end
+		
+		end
+		winner
 	end
 
-	def rows
+	def row_contents
 		@board.spaces.each_slice(@board.row_column_size).to_a
 	end
 
-	def columns
-		rows.transpose
+	def column_contents
+		row_contents.transpose
 	end
 
-	def left_diagonal
+	def left_diagonal_contents
 		range_start = STARTING_SPACE
 		range_end = @board.row_column_size - 1
 		range = range_start..range_end
-		[ range.collect{ |i| rows[i][i] } ]
+		[ range.collect{ |i| row_contents[i][i] } ]
 	end
 
-	def right_diagonal
+	def right_diagonal_contents
 		range_start = STARTING_SPACE
 		range_end = @board.row_column_size - 1
 		range = range_start..range_end
-		inverted_rows = rows.map { |row| row.reverse }
-		[ range.collect { |i| inverted_rows.reverse[i][i] } ]
+		inverted_row_contents = row_contents.map { |row| row.reverse }
+		[ range.collect { |i| inverted_row_contents[i][i] } ]
 	end
 
 
