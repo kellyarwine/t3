@@ -20,7 +20,7 @@ class ConsoleIo
 
 	def display_and_get(message)
 		display(message)
-		input.gets.chomp.to_i
+		input.gets.chomp
 	end
 
 	def display_welcome_message
@@ -45,6 +45,14 @@ class ConsoleIo
 
 	def display_draw
 		display("The game is a draw.")
+	end
+
+	def display_and_get_play_again
+		display_and_get("Would you like to play again?")
+	end
+
+	def display_and_get_gamepiece
+		display_and_get("What 1-character symbol would you like for your gamepiece?")
 	end
 
 end	

@@ -1,23 +1,26 @@
-require 'console_io'
-require 'board'
 require 'player'
 require 'game_rules'
+require 'validations'
 
 class Game
-	attr_accessor :game_rules, :console_io, :board, :player_1, :player_2, :current_players, :current_player, :move
+	attr_accessor :game_rules, :console_io, :board, :player_1, :player_2, :current_players, :current_player, :move, :gamepiece
 
-	def initialize
-		@board = Board.new
+	def initialize(board, console_io)
+		@console_io = console_io
+		@board = board
 		@game_rules = GameRules.new(@board)
-		@console_io = ConsoleIo.new(@board)
-		@player_1 = Player.new("x")
-		@player_2 = Player.new("o")
-		@current_players = [@player_1, @player_2]
-		@current_player = @player_1
+		@validations = Validations.new(@board)
 	end
 
-	def run
+	def setup_game
+		@player_1 = Player.new(display_and_get_gamepiece)
+		@player_2 = Player.new(display_and_get_gamepiece)
+		@current_players = [@player_1, @player_2]
+		@current_player = @player_1
 		display_welcome_message
+	end
+
+	def run_game
 		until @game_rules.game_over?
 			display_and_get_move
 			while invalid_move?
@@ -28,7 +31,12 @@ class Game
 			display_gameboard
 			switch_current_player
 		end
+
 		@game_rules.game_win != "" ? display_win(@game_rules.game_win) : display_draw
+	end
+
+	def display_and_get_gamepiece
+		@console_io.display_and_get_gamepiece
 	end
 
 	def display_welcome_message
@@ -40,7 +48,7 @@ class Game
 	end
 
 	def display_and_get_move
-		@move = @console_io.display_and_get_move(@current_player.piece)
+		@move = @console_io.display_and_get_move(@current_player.piece).to_i
 	end
 
 	def place_move
@@ -48,7 +56,7 @@ class Game
 	end
 
 	def invalid_move?
-		@game_rules.invalid_move?(@move)
+		@validations.invalid_move?(@move)
 	end
 
 	def display_invalid_move

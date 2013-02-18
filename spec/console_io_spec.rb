@@ -36,21 +36,37 @@ describe ConsoleIo do
 			subject.display_gameboard
 		end
 
-		it 'prompts player_1 for a move' do
-			subject.should_receive(:display).with("Player 1, please enter a move (1-9):")
-			subject.input.stub(:gets).and_return("9\n")
-			subject.display_and_get_move("x")
-		end
-
-		it 'prompts player_2 for a move' do
-			subject.stub(:display)
+		it 'prompts player 1 for a move' do
+			subject.should_receive(:display).with("Player 2, please enter a move (1-9):")
 			subject.input.should_receive(:gets).and_return("9\n")
 			subject.display_and_get_move("o")
 		end
 
 		it 'displays an invalid move message' do
-			subject.should_receive(:display)
+			subject.should_receive(:display).with("Invalid move.  Please try again.")
 			subject.display_invalid_move
+		end
+
+		it 'displays a win message for a specific player' do
+			subject.should_receive(:display).with("x wins!")
+			subject.display_win("x")
+		end
+
+		it 'displays a draw message' do
+			subject.should_receive(:display).with("The game is a draw.")
+			subject.display_draw
+		end
+
+		it 'prompts the player if they want to play again and receives their input' do
+			subject.should_receive(:display).with("Would you like to play again?")
+			subject.input.should_receive(:gets).and_return("Y\n")
+			subject.display_and_get_play_again
+		end
+
+		it 'prompts the player for their gamepiece choice and receives their input' do
+			subject.should_receive(:display).with("What 1-character symbol would you like for your gamepiece?")
+			subject.input.should_receive(:gets).and_return("Y\n")
+			subject.display_and_get_gamepiece
 		end
 
 end
