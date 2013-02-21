@@ -1,5 +1,5 @@
 class GameRules
-	attr_accessor :board
+	attr_accessor :board, :player
 	
 	STARTING_SPACE = 0
 	
@@ -7,23 +7,43 @@ class GameRules
 		@board = board
 	end
 
-	def game_over?
-		@board.spaces.select { |space| space == nil }.empty? || game_win != ""
+	def invalid_move?(space)
+		 (not valid_integer?(space) && space_open?(space) && in_board_range?(space))
 	end
 
-	def game_win
-		groups = [row_contents, column_contents, left_diagonal_contents, right_diagonal_contents]
-		winner = ""
+	def valid_integer?(space)
+		!!(space.to_s =~ /\d/)
+	end
 
-		groups.map do |group|
-			if group.any? { |set| set == ["x","x","x"] }
-				winner << "x"
-			elsif group.any? { |set| set == ["o","o","o"] }
-				winner << "o"
+	def in_board_range?(space)
+		space.between?(1,@board.size) 
+	end
+
+	def space_open?(space)
+		!!(@board.spaces[space-1] =~ /\d/)
+	end
+
+	def game_over?
+		spaces_open? || winning_gamepiece != nil
+	end
+
+	def spaces_open?
+		@board.spaces.select { |space| space =~ /\d/ } == []
+	end
+
+	def winning_gamepiece
+		board_partitions = [row_contents, column_contents, left_diagonal_contents, right_diagonal_contents]
+		winning_gamepiece = []
+
+		board_partitions.each do |board_partition|
+			board_partition.each do |win_group|
+				if win_group.uniq.length == 1 && win_group.count == @board.row_column_size
+					winning_gamepiece << win_group.first
+				end
 			end
-		
 		end
-		winner
+
+		winning_gamepiece.join[0]
 	end
 
 	def row_contents

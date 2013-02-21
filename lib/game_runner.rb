@@ -6,12 +6,13 @@ class GameRunner
 	attr_accessor :console_io, :game
 
 	def initialize
-		@board = Board.new
-		@console_io = ConsoleIo.new(@board)
-		@game = Game.new(@board, @console_io)
+		@console_io = ConsoleIo.new
+		@game = Game.new(@console_io)
 	end
 
 	def play_game
+		@game.setup_game
+		@game.run_game
 		while play_again?
 			@game.setup_game
 			@game.run_game

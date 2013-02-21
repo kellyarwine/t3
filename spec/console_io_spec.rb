@@ -6,67 +6,111 @@ describe ConsoleIo do
 		subject.output = StringIO.new
 	}
 
-	let(:board) 				{ Board.new }
+	let(:board) 				{ Board.new(9) }
 	let(:subject) 			{ ConsoleIo.new(board) }
+	let(:player_1) 			{ Player.new("o", "Player 1") }
 
-		it 'displays a message' do
-	  	subject.output.should_receive(:puts)
-	  	subject.display("Hi")
+	it 'displays a message' do
+  	subject.output.should_receive(:puts)
+  	subject.display("Hi")
+	end
+
+	it 'displays a message' do
+		subject.output.should_receive(:puts).with("Hi")
+		subject.input.stub(:gets => "9\n")
+		subject.display_and_get("Hi")
+	end
+
+	it 'returns an integer' do
+		subject.stub(:puts)
+		subject.input.stub(:gets).and_return("9\n")
+		subject.display_and_get("Hi").should == "9"
+	end
+
+	it 'displays a welcome message' do
+		subject.output.should_receive(:puts)
+		subject.display_welcome_message
+	end
+
+	it 'displays a gameboard' do
+		subject.output.should_receive(:puts)
+		subject.display_gameboard([1, 2, 3, 4, 5, 6, 7, 8, 9], 3)
+	end
+
+	it 'prompts player 1 for a move' do
+		subject.output.should_receive(:puts).with("Player 1, please enter a move (1-9):")
+		subject.input.should_receive(:gets).and_return("9\n")
+		subject.display_and_get_move(player_1)
+	end
+
+	it 'displays an invalid move message' do
+		subject.output.should_receive(:puts).with("Invalid move.  Please try again.")
+		subject.display_invalid_move
+	end
+
+	it 'displays a win message for a specific player' do
+		subject.output.should_receive(:puts).with("Player 1 wins!")
+		subject.display_win("Player 1")
+	end
+
+	it 'displays a draw message' do
+		subject.output.should_receive(:puts).with("The game is a draw.")
+		subject.display_draw
+	end
+
+	it 'prompts the player if they want to play again and receives their input' do
+		subject.output.should_receive(:puts).with("Would you like to play again?")
+		subject.input.should_receive(:gets).and_return("Y\n")
+		subject.display_and_get_play_again
+	end
+
+	it 'prompts the player for their gamepiece choice and receives their input' do
+		subject.output.should_receive(:puts).with("Player 1, what 1-character symbol would you like for your gamepiece?")
+		subject.input.should_receive(:gets).and_return("Y\n")
+		subject.display_and_get_gamepiece("Player 1")
+	end
+
+	it 'displays an invalid gamepiece message' do
+		subject.output.should_receive(:puts).with("Invalid gamepiece.  Please try again.")
+		subject.display_invalid_gamepiece
+	end
+
+	it 'prompts the player for their board choice and receives their input' do
+		subject.output.should_receive(:puts).with("What size board would you like to use?  Select from the following:\n\n")
+		subject.output.should_receive(:puts).with("1. 3x3\n")
+		subject.output.should_receive(:puts).with("2. 4x4\n")
+		subject.output.should_receive(:puts).with("3. 5x5\n\n")
+		subject.input.should_receive(:gets).and_return("4x4\n")
+		subject.display_and_get_board.should == "4x4"
+	end	
+
+	context "construct gameboard" do
+		it "constructs a horizontal grid line" do
+			subject.generate_grid_row(3).should == "\n-----+-----+-----"
 		end
 
-		it 'displays a message' do
-			subject.output.should_receive(:puts).with("Hi")
-			subject.input.stub(:gets => "9\n")
-			subject.display_and_get("Hi")
+		it "constructs a gameboard margin" do
+			subject.generate_margin(4).should == "     |     |     |     "
+		end
+	end
+
+	context "#generate_row" do
+		it "constructs a gameboard row with x, ' ' and x" do
+			subject.generate_row(["x",2,"x"]) == "  x  |  2  |  x  "
 		end
 
-		it 'returns an integer' do
-			subject.stub(:display)
-			subject.input.stub(:gets).and_return("9\n")
-			subject.display_and_get("Hi").should == "9"
+		it "constructs a gameboard row with x, o and x" do
+			subject.generate_row(["x","o","x"]) == "  x  |  o  |  x  "
 		end
 
-		it 'displays a welcome message' do
-			subject.should_receive(:display)
-			subject.display_welcome_message
+		it "sets square1, square2 and square 3 to ' ' when nil" do
+			subject.generate_row([1, 2, 3]) == "  1  |  2  |  3  \n"
 		end
 
-		it 'displays a gameboard' do
-			subject.should_receive(:display)
-			subject.display_gameboard
+		it "constructs a empty gameboard" do
+			subject.construct_gameboard([1, 2, 3, 4, 5, 6, 7, 8, 9], 3).should include("-----+-----+-----")
+			subject.construct_gameboard([1, 2, 3, 4, 5, 6, 7, 8, 9], 3).should include("  1  |  2  |  3  ")
 		end
-
-		it 'prompts player 1 for a move' do
-			subject.should_receive(:display).with("Player 2, please enter a move (1-9):")
-			subject.input.should_receive(:gets).and_return("9\n")
-			subject.display_and_get_move("o")
-		end
-
-		it 'displays an invalid move message' do
-			subject.should_receive(:display).with("Invalid move.  Please try again.")
-			subject.display_invalid_move
-		end
-
-		it 'displays a win message for a specific player' do
-			subject.should_receive(:display).with("x wins!")
-			subject.display_win("x")
-		end
-
-		it 'displays a draw message' do
-			subject.should_receive(:display).with("The game is a draw.")
-			subject.display_draw
-		end
-
-		it 'prompts the player if they want to play again and receives their input' do
-			subject.should_receive(:display).with("Would you like to play again?")
-			subject.input.should_receive(:gets).and_return("Y\n")
-			subject.display_and_get_play_again
-		end
-
-		it 'prompts the player for their gamepiece choice and receives their input' do
-			subject.should_receive(:display).with("What 1-character symbol would you like for your gamepiece?")
-			subject.input.should_receive(:gets).and_return("Y\n")
-			subject.display_and_get_gamepiece
-		end
+	end
 
 end
