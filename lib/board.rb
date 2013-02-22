@@ -10,8 +10,12 @@ class Board
 		Math.sqrt(@size).to_i
 	end
 
-	def place_move(marker, space)
-		@spaces[space-1] = marker
+	def place_move(gamepiece, space)
+		@spaces[space-1] = gamepiece
+	end
+
+	def available_spaces
+		@spaces.select { |space| space =~ /\d/ }
 	end
 
 end

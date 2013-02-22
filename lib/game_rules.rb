@@ -1,5 +1,5 @@
 class GameRules
-	attr_accessor :board, :player
+	attr_accessor :board
 	
 	STARTING_SPACE = 0
 	
@@ -24,10 +24,10 @@ class GameRules
 	end
 
 	def game_over?
-		spaces_open? || winning_gamepiece != nil
+		board_full? || winning_gamepiece != nil
 	end
 
-	def spaces_open?
+	def board_full?
 		@board.spaces.select { |space| space =~ /\d/ } == []
 	end
 

@@ -8,7 +8,7 @@ describe Board do
 		subject.spaces = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]
 	end
 
-	it "no elements are integers" do
+	it "has no elements that are integers" do
 		subject.should_not == [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 	end
 
@@ -32,6 +32,11 @@ describe Board do
 			subject.place_move("o",1)
 			subject.spaces.should == ["o","2","3","4","5","6","7","8","x","10","11","12","13","14","15","16"]
 		end
+	end
+
+	it "returns an array with all of the spaces available for play" do
+		subject.spaces = ["1","2","3","4","5","6","7","8","x","10","11","12","13","14","15","16"]
+		subject.available_spaces.should == ["1","2","3","4","5","6","7","8","10","11","12","13","14","15","16"]
 	end
 
 end

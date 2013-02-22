@@ -115,6 +115,18 @@ describe GameRules do
 			end		
 		end
 
+		context "#board_full?" do
+			it "returns false when there are no more moves to make" do
+				subject.board.spaces = ["x","x","x","o","o","o","o","x","x"]
+				subject.board_full?.should be_true
+			end
+
+			it "returns true when there are still moves to make" do
+				subject.board.spaces = ["x","x","x","4","o","o","o","x","x"]
+				subject.board_full?.should be_false
+			end
+		end
+
 		context "#winning_gamepiece" do
 			it "returns x when there are 3 x's in a row" do
 				board.spaces = ["x","x","x","4","5","6","7","8","9"]

@@ -29,28 +29,21 @@ class ConsoleIo
 		input.gets.chomp
 	end
 
-	def display_welcome_message
-		display("\nWelome to T3!  Get ready to lose.\n\n")
+	def display_and_get_opponent
+		display("Choose your opponent:\n\n")
+		display("1. AI Player (Easy)\n")
+		display_and_get("2. Human Player\n\n")
 	end
 
-	def display_and_get_move(player)
-		display_and_get("#{player.name}, please enter a move (1-9):")
+	def display_and_get_board
+		display("Choose the board size:\n\n")
+		display("1. 3x3\n")
+		display("2. 4x4\n")
+		display_and_get("3. 5x5\n\n")
 	end
 
-	def display_invalid_move
-		display("Invalid move.  Please try again.")
-	end
-
-	def display_win(name)
-		display("#{name} wins!")
-	end
-
-	def display_draw
-		display("The game is a draw.")
-	end
-
-	def display_and_get_play_again
-		display_and_get("Would you like to play again?")
+	def display_invalid_board
+		display("Invalid board.  Please try again.")
 	end
 
 	def display_and_get_gamepiece(name)
@@ -61,15 +54,18 @@ class ConsoleIo
 		display("Invalid gamepiece.  Please try again.")
 	end
 
-	def display_and_get_board
-		display("What size board would you like to use?  Select from the following:\n\n")
-		display("1. 3x3\n")
-		display("2. 4x4\n")
-		display_and_get("3. 5x5\n\n")
+
+	def display_welcome_message
+		display("\nWelome to T3!  Get ready to lose.\n\n")
 	end
 
-	def display_invalid_board
-		display("That board selection is invalid.  Please try again.")
+	def display_and_get_move(player, move = nil)
+		if player.name == "Human"
+			display_and_get("#{player.name}, please enter a move (1-9):")
+		else
+			display("#{player.name}, please enter a move (1-9):\n#{move}")
+			return move
+		end
 	end
 
 	def display_gameboard(spaces, row_column_size)
@@ -124,6 +120,22 @@ class ConsoleIo
 		end
 
 		grid_row = grid_row[0..-2]
+	end
+
+	def display_invalid_move
+		display("Invalid move.  Please try again.")
+	end
+
+	def display_win(name)
+		display("#{name} wins!")
+	end
+
+	def display_draw
+		display("The game is a draw.")
+	end
+
+	def display_and_get_play_again
+		display_and_get("Would you like to play again?")
 	end
 
 end	

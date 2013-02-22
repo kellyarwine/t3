@@ -1,9 +1,11 @@
-require 'player'
 require 'game_rules'
 require 'configurations'
+require 'player'
+require 'easy_ai'
+require 'human'
 
 class Game
-	attr_accessor :game_rules, :console_io, :board, :player_1, :player_2, :players, :current_player, :move, :gamepiece, :configurations, :size
+	attr_accessor :game_rules, :console_io, :board, :player_1, :player_2, :players, :current_player, :move, :gamepiece, :configurations
 
 	def initialize(console_io)
 		@configurations = Configurations.new
@@ -27,13 +29,12 @@ class Game
 			place_move
 			switch_current_player
 		end
+		display_gameboard
 		@game_rules.winning_gamepiece != nil ? display_win(@game_rules.winning_gamepiece) : display_draw
 	end
 
 	def setup_board
 		@board = Board.new(get_board_size)
-		require 'pry'
-		binding.pry
 		@game_rules = GameRules.new(@board)
 	end
 
@@ -55,10 +56,21 @@ class Game
 	end
 
 	def setup_players
-		@player_1 = Player.new(get_gamepiece("Player 1"), "Player 1")
-		@player_2 = Player.new(get_gamepiece("Player 2"), "Player 2")
+		@player_1 = get_opponent
+		@player_2 = Player.new(get_gamepiece("Human").downcase, "Human")
 		@players = [@player_1, @player_2]
 		@current_player = @players.first
+	end
+
+	def get_opponent
+		opponent = @console_io.display_and_get_opponent
+
+		if opponent == "1"
+			EasyAi.new("x", "Computer")
+		elsif opponent == "2"
+			Human.new(get_gamepiece("Other Human").downcase, "Other Human")
+		end
+
 	end
 
 	def get_gamepiece(name)
@@ -89,7 +101,12 @@ class Game
 	end
 
 	def display_and_get_move
-		@move = @console_io.display_and_get_move(@current_player).to_i
+		if @current_player.name == "Human"
+			@move = @console_io.display_and_get_move(@current_player).to_i
+		else
+			@move = @current_player.get_move(@board.available_spaces)
+			@console_io.display_and_get_move(@current_player,@move).to_i
+		end
 	end
 
 	def place_move
