@@ -115,6 +115,18 @@ describe GameRules do
 			end		
 		end
 
+		context "#win_game?" do
+			it "returns false when the game was a draw" do
+				subject.board.spaces = ["x","x","o","o","x","x","x","o","o"]
+				subject.win_game?.should be_false
+			end
+
+			it "returns true when someone won the game" do
+				subject.board.spaces = ["x","x","x","4","o","o","o","x","x"]
+				subject.win_game?.should be_true
+			end
+		end		
+
 		context "#board_full?" do
 			it "returns false when there are no more moves to make" do
 				subject.board.spaces = ["x","x","x","o","o","o","o","x","x"]

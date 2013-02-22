@@ -24,11 +24,15 @@ class GameRules
 	end
 
 	def game_over?
-		board_full? || winning_gamepiece != nil
+		board_full? || win_game?
 	end
 
 	def board_full?
 		@board.spaces.select { |space| space =~ /\d/ } == []
+	end
+
+	def win_game?
+		winning_gamepiece != nil
 	end
 
 	def winning_gamepiece

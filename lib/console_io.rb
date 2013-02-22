@@ -42,21 +42,22 @@ class ConsoleIo
 		display_and_get("3. 5x5\n\n")
 	end
 
-	def display_invalid_board
-		display("Invalid board.  Please try again.")
-	end
-
 	def display_and_get_gamepiece(name)
 		display_and_get("#{name}, what 1-character symbol would you like for your gamepiece?")
 	end
 
-	def display_invalid_gamepiece
-		display("Invalid gamepiece.  Please try again.")
+	def display_and_get_turn_order(players)
+		display("Choose which player goes first:\n\n")
+		display("1. #{players.first.name}\n")
+		display_and_get("2. #{players.last.name}\n")
 	end
-
 
 	def display_welcome_message
 		display("\nWelome to T3!  Get ready to lose.\n\n")
+	end
+
+	def display_invalid_selection
+		display("Invalid selection.  Please try again.")
 	end
 
 	def display_and_get_move(player, move = nil)
@@ -64,7 +65,7 @@ class ConsoleIo
 			display_and_get("#{player.name}, please enter a move (1-9):")
 		else
 			display("#{player.name}, please enter a move (1-9):\n#{move}")
-			return move
+			move
 		end
 	end
 

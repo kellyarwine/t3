@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe Game do
-	let(:console_io)				{ ConsoleIo.new					}
-	let(:subject)						{ Game.new(console_io)	}
+	let(:console_io)				{ ConsoleIo.new									}
+	let(:player_1)					{ Player.new("x", "Player 1")		}
+	let(:player_2)					{ Player.new("o", "Player 2")		}
+	let(:subject)						{ Game.new(console_io)					}
 
 	# context "#setup_game" do
 		# xit "sets up correctly" do
@@ -165,5 +167,17 @@ describe Game do
 	# 		subject.create_player("Player 1").should be_kind_of(Player)
 	# 	end	
 	# end
+
+	it "sets up the turn order so that player_1 goes first" do
+		subject.players = [player_1, player_2]
+		subject.console_io.should_receive(:display_and_get_turn_order).and_return("1")
+		subject.get_turn_order.should == [player_1,player_2]
+	end
+
+	it "sets up the turn order so that player_2 goes first" do
+		subject.players = [player_1, player_2]
+		subject.console_io.should_receive(:display_and_get_turn_order).and_return("2")
+		subject.get_turn_order.should == [player_2,player_1]
+	end
 
 end

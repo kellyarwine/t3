@@ -44,10 +44,6 @@ describe ConsoleIo do
 		subject.display_and_get_board.should == "1"
 	end	
 
-	it "displays an invalid board message" do
-		subject.output.should_receive(:puts).with("Invalid board.  Please try again.")
-		subject.display_invalid_board
-	end
 
 	it 'prompts the player for their gamepiece choice and receives their input' do
 		subject.output.should_receive(:puts).with("Player 1, what 1-character symbol would you like for your gamepiece?")
@@ -55,9 +51,9 @@ describe ConsoleIo do
 		subject.display_and_get_gamepiece("Player 1")
 	end
 
-	it 'displays an invalid gamepiece message' do
-		subject.output.should_receive(:puts).with("Invalid gamepiece.  Please try again.")
-		subject.display_invalid_gamepiece
+	it 'displays an invalid selection message' do
+		subject.output.should_receive(:puts).with("Invalid selection.  Please try again.")
+		subject.display_invalid_selection
 	end
 
 	it 'displays a welcome message' do

@@ -15,6 +15,7 @@ class Game
 	def setup_game
 		setup_board
 		setup_players
+		setup_turn_order
 		display_welcome_message
 	end
 
@@ -30,7 +31,11 @@ class Game
 			switch_current_player
 		end
 		display_gameboard
-		@game_rules.winning_gamepiece != nil ? display_win(@game_rules.winning_gamepiece) : display_draw
+		win_game? ? display_win : display_draw
+	end
+
+	def display_invalid_selection
+		@console_io.display_invalid_selection
 	end
 
 	def setup_board
@@ -39,19 +44,13 @@ class Game
 	end
 
 	def get_board_size
-		board_size = @console_io.display_and_get_board
-
-		if @configurations.invalid_board_size?(board_size)
-			@console_io.display_invalid_board
+		case @console_io.display_and_get_board
+		when "1" then 9
+		when "2" then 16
+		when "3" then 25			
+		else
+			@console_io.display_invalid_selection
 			get_board_size
-		end
-
-		if board_size == "1"
-			9
-		elsif board_size == "2"
-			16
-		elsif board_size == "3"
-			25
 		end
 	end
 
@@ -59,33 +58,50 @@ class Game
 		@player_1 = get_opponent
 		@player_2 = Player.new(get_gamepiece("Human").downcase, "Human")
 		@players = [@player_1, @player_2]
-		@current_player = @players.first
 	end
 
 	def get_opponent
-		opponent = @console_io.display_and_get_opponent
-
-		if opponent == "1"
-			EasyAi.new("x", "Computer")
-		elsif opponent == "2"
-			Human.new(get_gamepiece("Other Human").downcase, "Other Human")
+		case @console_io.display_and_get_opponent
+		when "1" then EasyAi.new(get_gamepiece("Computer"), "Computer")
+		when "2" then Human.new(get_gamepiece("Other Human"), "Other Human")
+		else
+			@console_io.display_invalid_selection
+			get_opponent
 		end
-
 	end
 
 	def get_gamepiece(name)
-		gamepiece = @console_io.display_and_get_gamepiece(name)
+		if name == "Human"
+			gamepiece = @console_io.display_and_get_gamepiece(name).downcase
+			gamepiece
+		else
+			gamepiece = "x"
+		end
+		validate_gamepiece(gamepiece,name)
+	end
 
+	def validate_gamepiece(gamepiece,name)
 		if @configurations.invalid_gamepiece?(gamepiece)
-			display_invalid_gamepiece
+			@console_io.display_invalid_selection
 			get_gamepiece(name)
 		else 
 			gamepiece
 		end
 	end
 
-	def display_invalid_gamepiece
-		@console_io.display_invalid_gamepiece
+	def setup_turn_order
+		@players = get_turn_order
+		@current_player = @players.first
+	end
+
+	def get_turn_order
+		case @console_io.display_and_get_turn_order(@players)
+		when "1" then [@players.first, @players.last]
+		when "2" then [@players.last, @players.first]
+		else
+			@console_io.display_invalid_selection
+			get_turn_order
+		end
 	end
 
 	def display_welcome_message
@@ -117,16 +133,23 @@ class Game
 		@game_rules.invalid_move?(@move)
 	end
 
-	def display_invalid_move
-		@console_io.display_invalid_move
-	end
-
 	def switch_current_player
 		@current_player = @players.reverse!.first
 	end
 
-	def display_win(player)
-		@console_io.display_win(player)
+	def win_game?
+		@game_rules.win_game?
+	end
+
+	def display_win
+		player_name = get_player_name(@game_rules.winning_gamepiece)
+		@console_io.display_win(player_name)
+	end
+
+	def get_player_name(gamepiece)
+		player_name = ""
+		@players.map { |player| player_name = player.name if player.piece == gamepiece }
+		player_name
 	end
 
 	def display_draw
