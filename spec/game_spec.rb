@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Game do
-	let(:console_io)				{ ConsoleIo.new									}
-	let(:player_1)					{ Player.new("x", "Player 1")		}
-	let(:player_2)					{ Player.new("o", "Player 2")		}
-	let(:subject)						{ Game.new(console_io)					}
+	let(:console_io)	{ ConsoleIo.new								}
+	let(:player_1)		{ Player.new("x", "Player 1")	}
+	let(:player_2)		{ Player.new("o", "Player 2")	}
+	let(:subject)			{ Game.new(console_io)				}
+	let(:players)			{ [player_1, player_2]				}
 
 	# context "#setup_game" do
 		# xit "sets up correctly" do
@@ -153,31 +154,96 @@ describe Game do
 	# 	subject.player_2.piece.should == "o"
 	# end	
 
-	# context "#create_player" do
-	# 	it "sets up a player when gamepiece input is valid" do
-	# 		subject.console_io.should_receive(:display_and_get_gamepiece).and_return("x")
-	# 		subject.configurations.should_receive(:invalid_gamepiece?).and_return(false)
-	# 		subject.create_player("Player 1").should be_kind_of(Player)
-	# 	end	
+	context "#get_board_size" do
+		it "sets up a 3x3 board" do
+			subject.console_io.should_receive(:display_and_get_board).and_return("1")
+			subject.get_board_size.should == 9
+		end	
 
-	# 	it "sets up a player when gamepiece input is invalid 2 times" do
-	# 		subject.console_io.should_receive(:display_and_get_gamepiece).and_return("xr","xy","o")
-	# 		subject.configurations.should_receive(:invalid_gamepiece?).and_return(true,true,false)
-	# 		subject.console_io.should_receive(:display_invalid_gamepiece).exactly(2).times
-	# 		subject.create_player("Player 1").should be_kind_of(Player)
-	# 	end	
-	# end
+		it "sets up a 4x4 board" do
+			subject.console_io.should_receive(:display_and_get_board).and_return("2")
+			subject.get_board_size.should == 16
+		end	
 
-	it "sets up the turn order so that player_1 goes first" do
-		subject.players = [player_1, player_2]
-		subject.console_io.should_receive(:display_and_get_turn_order).and_return("1")
-		subject.get_turn_order.should == [player_1,player_2]
+		it "sets up a 5x5 board" do
+			subject.console_io.should_receive(:display_and_get_board).and_return("3")
+			subject.get_board_size.should == 25
+		end	
+
+		it "sets up a 5x5 board after an invalid selection is made" do
+			subject.console_io.should_receive(:display_and_get_board).and_return("100","3")
+			subject.console_io.should_receive(:display_invalid_selection)
+			subject.get_board_size.should == 25
+		end			
 	end
 
-	it "sets up the turn order so that player_2 goes first" do
-		subject.players = [player_1, player_2]
-		subject.console_io.should_receive(:display_and_get_turn_order).and_return("2")
-		subject.get_turn_order.should == [player_2,player_1]
+	context "#get_human_gamepiece" do
+		it "sets up a gamepiece for a human" do
+			subject.console_io.should_receive(:display_and_get_gamepiece).and_return("Z")
+			subject.configurations.should_receive(:invalid_gamepiece?).and_return(false)
+			subject.get_human_gamepiece("Human").should == "z"
+		end	
+
+		it "sets up a gamepiece for the AI" do
+			subject.get_ai_gamepiece.should == "x"
+		end	
+
+		it "sets up a gamepiece for a human after an invalid selection is made" do
+			subject.console_io.should_receive(:display_and_get_gamepiece).and_return("10","Z")
+			subject.console_io.should_receive(:display_invalid_selection)
+			subject.get_human_gamepiece("Human").should == "z"
+		end	
 	end
 
+	context "#get_opponent" do
+		it "sets up a player when one player is the AI" do
+			subject.console_io.should_receive(:display_and_get_opponent).and_return("1")
+			subject.get_opponent.should be_kind_of(EasyAi)
+		end	
+
+		it "sets up a player when one player is the human" do
+			subject.console_io.should_receive(:display_and_get_opponent).and_return("2")
+			subject.console_io.should_receive(:display_and_get_gamepiece).and_return("u")
+			subject.get_opponent.should be_kind_of(Human)
+		end	
+
+		it "sets up an AI player after an invalid selection is made" do
+			subject.console_io.should_receive(:display_and_get_opponent).and_return("gg","1")
+			subject.console_io.should_receive(:display_invalid_selection)
+			subject.get_opponent.should be_kind_of(EasyAi)
+		end	
+	end
+
+	context "#get_turn_order" do
+		it "sets up player_1 as the first player" do
+			subject.players = [player_1, player_2]
+			subject.console_io.should_receive(:display_and_get_turn_order).and_return("1")
+			subject.get_turn_order.should == [player_1,player_2]
+		end
+
+		it "sets up player_2 as the first player" do
+			subject.players = [player_1, player_2]
+			subject.console_io.should_receive(:display_and_get_turn_order).and_return("2")
+			subject.get_turn_order.should == [player_2,player_1]
+		end
+
+		it "sets up player_2 as the first player after an invalid selection is made" do
+			subject.players = [player_1, player_2]
+			subject.console_io.should_receive(:display_and_get_turn_order).and_return("4","2")
+			subject.console_io.should_receive(:display_invalid_selection)
+			subject.get_turn_order.should == [player_2,player_1]
+		end
+	end
+
+	context "#get_player_name" do
+		it "returns the player name when given a gamepiece" do
+			subject.players = [player_1, player_2]
+			subject.get_player_name("x").should == player_1.name
+		end
+
+		it "returns the player name when given a gamepiece" do
+			subject.players = [player_1, player_2]
+			subject.get_player_name("o").should == player_2.name
+		end
+	end
 end

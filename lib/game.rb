@@ -55,36 +55,37 @@ class Game
 	end
 
 	def setup_players
-		@player_1 = get_opponent
-		@player_2 = Player.new(get_gamepiece("Human").downcase, "Human")
+		@player_1 = Player.new(get_human_gamepiece("Human"), "Human")
+		@player_2 = get_opponent
 		@players = [@player_1, @player_2]
 	end
 
 	def get_opponent
 		case @console_io.display_and_get_opponent
-		when "1" then EasyAi.new(get_gamepiece("Computer"), "Computer")
-		when "2" then Human.new(get_gamepiece("Other Human"), "Other Human")
+		when "1" then EasyAi.new(get_ai_gamepiece, "Easy AI")
+		when "2" then Human.new(get_human_gamepiece("Other Human"), "Other Human")
 		else
 			@console_io.display_invalid_selection
 			get_opponent
 		end
 	end
 
-	def get_gamepiece(name)
-		if name == "Human"
-			gamepiece = @console_io.display_and_get_gamepiece(name).downcase
-			gamepiece
+	def get_human_gamepiece(name)
+		gamepiece = @console_io.display_and_get_gamepiece(name).downcase
+		if @configurations.invalid_gamepiece?(gamepiece)
+			@console_io.display_invalid_selection
+			get_human_gamepiece(name)
 		else
-			gamepiece = "x"
+			gamepiece
 		end
-		validate_gamepiece(gamepiece,name)
 	end
 
-	def validate_gamepiece(gamepiece,name)
+	def get_ai_gamepiece
+		gamepiece = "x"
 		if @configurations.invalid_gamepiece?(gamepiece)
 			@console_io.display_invalid_selection
 			get_gamepiece(name)
-		else 
+		else
 			gamepiece
 		end
 	end
