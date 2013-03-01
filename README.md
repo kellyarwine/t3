@@ -21,3 +21,7 @@ TODO:
 
 -seperate unit tests and integration tests
 -------------------------------------------------------------------
+
+From Josh:
+  switch tab indentation to 2 spaces in all files (and in Sublime from here on out)
+  Namespace everything?
