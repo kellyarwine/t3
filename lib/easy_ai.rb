@@ -1,4 +1,4 @@
-require 'Player'
+require 'player'
 
 class EasyAi < Player
 	

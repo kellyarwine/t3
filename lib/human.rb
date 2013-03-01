@@ -1,4 +1,4 @@
-require 'Player'
+require 'player'
 
 class Human < Player
 	attr_accessor :console_io
