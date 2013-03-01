@@ -91,9 +91,7 @@ class ConsoleIo
   end
 
   def generate_row(row)
-    row.map { |marker| "  %-2s " % marker }
-       .join("|") <<
-       LINE_END
+    row.map { |marker| "  %-2s " % marker }.join("|") << LINE_END
   end
 
   def generate_grid_row(row_column_size)

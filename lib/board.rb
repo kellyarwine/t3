@@ -23,7 +23,7 @@ class Board
 	end
 
 	def valid_integer?(space)
-		!!(space.to_s =~ /\d/)
+		space.to_s =~ /\d/
 	end
 
 	def in_board_range?(space)
