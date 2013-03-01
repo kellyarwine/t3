@@ -25,7 +25,7 @@ class Minimax
 # 		for i in 1..available_spaces.length
 # # binding.pry
 # 			@score = 0
-			
+      
 # 			position = @board.spaces.index(@board.available_spaces[i-1])
 # 			@board.spaces[position] = swap_current_gamepiece
 
@@ -39,7 +39,7 @@ class Minimax
 # 			run_scorer(@board.available_spaces) if not @game_rules.game_over?
 # # binding.pry
 # 		score_win
-		
+    
 # 		puts "----------------------------------------------\n"
 # 		print @board.spaces		
 # 		puts "#{@game_rules.winning_gamepiece} wins!"
