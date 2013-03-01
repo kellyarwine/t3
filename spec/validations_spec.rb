@@ -1,7 +1,7 @@
 require 'validations'
 
 describe Validations do
-	let(:board) 				{ Board.new 							}
+	let(:board) 				{ Board.new 9							}
 	let(:console_io) 		{ ConsoleIo.new(board)		}
 	let(:subject) 			{ Validations.new(board)	}
 	
