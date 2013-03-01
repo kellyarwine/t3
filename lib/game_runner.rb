@@ -1,26 +1,35 @@
-require 'game'
 require 'console_io'
-require 'board'
+require 'configurations'
+require 'game'
 
 class GameRunner
-	attr_accessor :console_io, :game
+	attr_accessor :console_io, :game, :configurations
 
 	def initialize
 		@console_io = ConsoleIo.new
-		@game = Game.new(@console_io)
+		@configurations = Configurations.new(@console_io)
+		@game = Game.new(@console_io,@configurations)
 	end
 
 	def play_game
-		@game.setup_game
-		@game.run_game
-		while play_again?
-			@game.setup_game
-			@game.run_game
-		end
+		run_game
+		play_game if play_again?
+	end
+
+	def run_game
+		@configurations.configure_game
+		@game.configurations = @configurations
+		@game.start_game
 	end
 
 	def play_again?
-		@console_io.display_and_get_play_again.upcase == "Y"
+		case @console_io.display_and_get_play_again.downcase
+		when "y" then true
+		when "n" then false
+		else
+			@console_io.display_invalid_selection
+			play_again?
+		end
 	end
 
 end

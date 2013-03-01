@@ -1,6 +1,8 @@
 class ConsoleIo
 	attr_accessor :input, :output, :gamepiece, :board_row
 
+	HUMAN_LABEL = "Human"
+	AI_LABEL = "Computer"
 	SPACE_LENGTH = 5
 	BLANK_SPACE = " "
 	GRID_HORIZONTAL_LINE = "-"
@@ -24,53 +26,53 @@ class ConsoleIo
 		output.puts message
 	end
 
-	def display_and_get(message)
-		display(message)
+	def get
 		input.gets.chomp
 	end
 
-	def display_and_get_opponent
-		display("Choose your opponent:\n\n")
-		display("1. AI Player (Easy)\n")
-		display_and_get("2. Human Player\n\n")
-	end
-
-	def display_and_get_board
-		display("Choose the board size:\n\n")
-		display("1. 3x3\n")
-		display("2. 4x4\n")
-		display_and_get("3. 5x5\n\n")
-	end
-
-	def display_and_get_gamepiece(name)
-		display_and_get("#{name}, what 1-character symbol would you like for your gamepiece?")
-	end
-
-	def display_and_get_turn_order(players)
-		display("Choose which player goes first:\n\n")
-		display("1. #{players.first.name}\n")
-		display_and_get("2. #{players.last.name}\n")
-	end
-
-	def display_welcome_message
-		display("\nWelome to T3!  Get ready to lose.\n\n")
+	def display_and_get(message)
+		display(message)
+		input.gets.chomp
 	end
 
 	def display_invalid_selection
 		display("Invalid selection.  Please try again.")
 	end
 
-	def display_and_get_move(player, move = nil)
-		if player.name == "Human"
-			display_and_get("#{player.name}, please enter a move (1-9):")
-		else
-			display("#{player.name}, please enter a move (1-9):\n#{move}")
-			move
-		end
+	def player_label(player)
+		player.human? == true ? HUMAN_LABEL : AI_LABEL
+	end
+
+	def display_and_get_opponent
+		display("Choose your opponent:\n\n")
+		display("1. #{AI_LABEL}\n")
+		display_and_get("2. #{HUMAN_LABEL}\n")
+	end
+
+	def display_and_get_board(board_sizes)
+		display("Choose the board size:\n\n")
+		board_sizes.each_with_index { |size,i| display("#{i+1}. #{size}\n") }
+		input.gets.chomp
+	end
+
+	def display_and_get_gamepiece
+		display_and_get("Choose any letter to be your gamepiece.")
+	end
+
+	def display_and_get_turn_order(player_1,player_2)
+		display("Choose which player goes first:\n\n")
+		display("1. #{player_label(player_1)}\n")
+		display_and_get("2. #{player_label(player_2)}\n")
+	end
+
+	def display_welcome_message
+		display("\nWelome to T3!  Get ready to lose.\n\n")
 	end
 
 	def display_gameboard(spaces, row_column_size)
+		@spaces = spaces
 		display(construct_gameboard(spaces, row_column_size))
+		# construct_gameboard(spaces, row_column_size)
 	end
 
 	def construct_gameboard(spaces, row_column_size)
@@ -120,15 +122,15 @@ class ConsoleIo
 			grid_row << GRID_CROSSHAIRS
 		end
 
-		grid_row = grid_row[0..-2]
+		grid_row = grid_row[0..-1]
 	end
 
-	def display_invalid_move
-		display("Invalid move.  Please try again.")
+	def display_request_for_move(player)
+		display("#{player_label(player)}, please enter a move (1-9):")
 	end
 
-	def display_win(name)
-		display("#{name} wins!")
+	def display_win(gamepiece)
+		display("#{gamepiece} wins!")
 	end
 
 	def display_draw

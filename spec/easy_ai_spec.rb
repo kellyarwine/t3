@@ -2,10 +2,18 @@ require 'spec_helper'
 
 describe EasyAi do
 
-	let(:subject) 			{ EasyAi.new("x","Computer") }
+	let(:subject)	{ EasyAi.new("x") }
 
 	it "should inherit from player" do
 		described_class.ancestors.should include(Player)
+	end
+
+	it 'has a piece' do
+		subject.piece.should == "x"
+	end
+
+	it "should not be human" do
+		subject.human?.should == false
 	end
 
 	it "should make a random move from the spaces available" do

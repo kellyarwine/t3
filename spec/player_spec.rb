@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Player do
-	it 'has a piece' do
-		Player.new("x", "Player 1").piece.should == "x"
-	end
+	let(:gamepiece) { "x" }
+	let(:subject) { Player.new(gamepiece) }
 
-	it 'has a name' do
-		Player.new("x", "Player 1").name.should == "Player 1"
-	end	
+	it 'has a piece' do
+		Player.new("x").piece.should == gamepiece
+	end
+	
 end

@@ -5,6 +5,10 @@ describe GameRules do
 		let(:board) 				{ Board.new(9) }
 		let(:subject) 			{ GameRules.new(board) }
 		
+		it "initializes board" do
+			subject.board.should be_kind_of(Board)
+		end
+
 		context "#invalid_move?" do
 			it "returns true when input is a 0" do
 				subject.invalid_move?(0).should be_true

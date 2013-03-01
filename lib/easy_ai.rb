@@ -2,8 +2,12 @@ require 'Player'
 
 class EasyAi < Player
 	
-	def initialize(piece,name)
-		super(piece,name)
+	def initialize(piece)
+		super(piece)
+	end
+
+	def human?
+		false
 	end
 
 	def get_move(available_spaces)

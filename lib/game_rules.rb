@@ -8,7 +8,7 @@ class GameRules
 	end
 
 	def invalid_move?(space)
-		 (not valid_integer?(space) && space_open?(space) && in_board_range?(space))
+		 (not space_open?(space) && in_board_range?(space) && valid_integer?(space))
 	end
 
 	def valid_integer?(space)
