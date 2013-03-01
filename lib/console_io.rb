@@ -15,11 +15,11 @@ class ConsoleIo
   end
   
   def input
-    @input ||= STDIN
+    @input ||= $stdin
   end
 
   def output
-    @output ||= STDOUT
+    @output ||= $stdout
   end
 
   def display(message)
