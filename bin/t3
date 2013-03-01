@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'game_runner'
+require 't3/game_runner'
 
-GameRunner.new.play_game
+T3::GameRunner.new.play_game

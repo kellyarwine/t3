@@ -1,9 +1,9 @@
-require 'validations'
+require 't3/validations'
 
-describe Validations do
-  let(:board) 				{ Board.new 9							}
-  let(:console_io) 		{ ConsoleIo.new(board)		}
-  let(:subject) 			{ Validations.new(board)	}
+describe T3::Validations do
+  let(:board) 	   { T3::Board.new 9            }
+  let(:console_io) { T3::ConsoleIo.new(board)   }
+  let(:subject)    { T3::Validations.new(board) }
   
   context "#invalid_move?" do
     it "returns true when input is a 0" do

@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe Human do
-  let(:console_io)	{ ConsoleIo.new 						}
-  let(:subject)			{ Human.new("x",console_io) }
+describe T3::Human do
+  let(:console_io)	{ T3::ConsoleIo.new 						}
+  let(:subject)			{ T3::Human.new("x",console_io) }
 
   it "should inherit from player" do
-    described_class.ancestors.should include(Player)
+    described_class.ancestors.should include(T3::Player)
   end
 
   it "initializes the console_io, configurations and game" do
-    subject.console_io.should be_kind_of(ConsoleIo)
+    subject.console_io.should be_kind_of(T3::ConsoleIo)
   end
 
   it "is a human" do

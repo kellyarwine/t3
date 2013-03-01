@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Player do
+describe T3::Player do
   let(:gamepiece) { "x" }
-  let(:subject) { Player.new(gamepiece) }
+  let(:subject) { T3::Player.new(gamepiece) }
 
   it 'has a piece' do
-    Player.new("x").piece.should == gamepiece
+    T3::Player.new("x").piece.should == gamepiece
   end
   
 end

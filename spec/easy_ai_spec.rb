@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe EasyAi do
+describe T3::EasyAi do
 
-  let(:subject)	{ EasyAi.new("x") }
+  let(:subject)	{ T3::EasyAi.new("x") }
 
   it "should inherit from player" do
-    described_class.ancestors.should include(Player)
+    described_class.ancestors.should include(T3::Player)
   end
 
   it 'has a piece' do

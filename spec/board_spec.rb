@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Board do
+describe T3::Board do
 
   context "with a board_size of 3x3" do
-    let(:subject)			{ Board.new(9) }
+    let(:subject) { T3::Board.new(9) }
   
     it "has an array of spaces that are strings" do
       subject.spaces = ["1","2","3","4","5","6","7","8","9"]
@@ -125,7 +125,7 @@ describe Board do
   end
 
   context "with a board_size of 4x4" do
-    let(:subject) 				{ Board.new(16) }
+    let(:subject) { T3::Board.new(16) }
 
     context "#invalid_move?" do
       it "returns true when input invalid" do
@@ -186,7 +186,7 @@ describe Board do
   end
 
   context "with a board_size of 4x4" do
-    let(:subject) 				{ Board.new(25) }
+    let(:subject) { T3::Board.new(25) }
 
     context "#invalid_move?" do
       it "returns true when input is invalid" do

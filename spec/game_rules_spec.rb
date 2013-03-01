@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe GameRules do
+describe T3::GameRules do
   context "with a board_size of 3x3" do
-    let(:board) 				{ Board.new(9) }
-    let(:subject) 			{ GameRules.new(board) }
+    let(:board) 				{ T3::Board.new(9) }
+    let(:subject) 			{ T3::GameRules.new(board) }
     
     it "initializes board" do
-      subject.board.should be_kind_of(Board)
+      subject.board.should be_kind_of(T3::Board)
     end
 
     context "#game_over?" do
@@ -123,8 +123,8 @@ describe GameRules do
   end
 
   context "with a board_size of 4x4" do
-    let(:board) 				{ Board.new(16) }
-    let(:subject) 			{ GameRules.new(board) }	
+    let(:board) 				{ T3::Board.new(16) }
+    let(:subject) 			{ T3::GameRules.new(board) }	
 
     context "#game_over?" do
       it "returns true when board is full and there are no wins" do
@@ -162,8 +162,8 @@ describe GameRules do
   end
 
   context "with a board_size of 5x5" do
-    let(:board) 				{ Board.new(25) }
-    let(:subject) 			{ GameRules.new(board) }
+    let(:board) 				{ T3::Board.new(25) }
+    let(:subject) 			{ T3::GameRules.new(board) }
     
     context "#game_over?" do
       it "returns true when board is full and there are no wins" do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Minimax do
+describe T3::Minimax do
   let(:board)				{ Board.new(9) }
   let(:game_rules)	{ GameRules.new(board) }
   let(:console_io)	{ ConsoleIo.new }

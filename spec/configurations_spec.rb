@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe Configurations do
+describe T3::Configurations do
 
-  let(:console_io)	{ ConsoleIo.new										}
-  let(:board)				{ Board.new(9)										}
-  let(:player_1)		{ Human.new("x", console_io)			}
-  let(:player_2)		{ EasyAi.new("o")									}
-  let(:subject)			{ Configurations.new(console_io)	}
+  let(:console_io) { T3::ConsoleIo.new                  }
+  let(:board)      { T3::Board.new(9)                   }
+  let(:player_1)   { T3::Human.new("x", console_io)     }
+  let(:player_2)   { T3::EasyAi.new("o")                }
+  let(:subject)	   { T3::Configurations.new(console_io) }
 
   it "instantiates the console_io and gamepieces" do
-    subject.console_io.should be_kind_of(ConsoleIo)
+    subject.console_io.should be_kind_of(T3::ConsoleIo)
   end
 
   it "configures the game correctly" do
@@ -17,13 +17,13 @@ describe Configurations do
     subject.should_receive(:setup_players)
     subject.should_receive(:setup_turn_order)
     subject.configure_game
-    subject.game_rules.should be_kind_of(GameRules)
+    subject.game_rules.should be_kind_of(T3::GameRules)
   end
 
   context "#board" do
     it "sets up a 3x3 board if one does not already exist" do
       subject.should_receive(:get_board_size).and_return("9")
-      subject.board.should be_kind_of(Board)
+      subject.board.should be_kind_of(T3::Board)
       subject.board.size.should == "9"
     end	
 
@@ -61,16 +61,16 @@ describe Configurations do
       subject.console_io.should_receive(:display_and_get_opponent).and_return("1")
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("o")
       subject.setup_players
-      subject.player_1.should be_kind_of(Human)
-      subject.player_2.should be_kind_of(EasyAi)
+      subject.player_1.should be_kind_of(T3::Human)
+      subject.player_2.should be_kind_of(T3::EasyAi)
     end	
 
     it "sets up player_1 and player_2 as human players" do
       subject.console_io.should_receive(:display_and_get_opponent).and_return("2")
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","i")
       subject.setup_players
-      subject.player_1.should be_kind_of(Human)
-      subject.player_2.should be_kind_of(Human)
+      subject.player_1.should be_kind_of(T3::Human)
+      subject.player_2.should be_kind_of(T3::Human)
     end
 
     it "sets up player_1 and player_2 as human players after an invalid selection is made" do
@@ -78,8 +78,8 @@ describe Configurations do
       subject.console_io.should_receive(:display_invalid_selection)
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","j")
       subject.setup_players
-      subject.player_1.should be_kind_of(Human)
-      subject.player_2.should be_kind_of(Human)
+      subject.player_1.should be_kind_of(T3::Human)
+      subject.player_2.should be_kind_of(T3::Human)
     end
   end
 
