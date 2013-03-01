@@ -61,8 +61,8 @@ class Game
 	def display_and_get_move
 		@console_io.display_request_for_move(current_player)
 		@move = current_player.get_move(board.available_spaces)
-		
-		if game_rules.invalid_move?(@move)
+
+		if board.invalid_move?(@move)
 			@console_io.display_invalid_selection
 			display_and_get_move
 		end

@@ -7,22 +7,6 @@ class GameRules
 		@board = board
 	end
 
-	def invalid_move?(space)
-		 (not space_open?(space) && in_board_range?(space) && valid_integer?(space))
-	end
-
-	def valid_integer?(space)
-		!!(space.to_s =~ /\d/)
-	end
-
-	def in_board_range?(space)
-		space.between?(1,@board.size) 
-	end
-
-	def space_open?(space)
-		!!(@board.spaces[space-1] =~ /\d/)
-	end
-
 	def game_over?
 		board_full? || win_game?
 	end

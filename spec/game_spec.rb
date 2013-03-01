@@ -18,6 +18,7 @@ describe Game do
 			subject.console_io.should_receive(:display_gameboard).exactly(2).times
 			subject.console_io.should_receive(:display_request_for_move)
 			subject.player_1.should_receive(:get_move).and_return(2)
+				subject.board.should_receive(:invalid_move?).and_return(false)
 			subject.board.should_receive(:place_move)
 			subject.game_rules.should_receive(:win_game?).and_return(false)			
 			subject.console_io.should_receive(:display_draw)
@@ -31,6 +32,7 @@ describe Game do
 			subject.console_io.should_receive(:display_request_for_move).exactly(3).times
 			subject.player_1.should_receive(:get_move).and_return(2,1)
 			subject.player_2.should_receive(:get_move).and_return(4)
+			subject.board.should_receive(:invalid_move?).and_return(false,false,false)
 			subject.board.should_receive(:place_move).exactly(3).times
 			subject.game_rules.should_receive(:win_game?).and_return(false)
 			subject.console_io.should_receive(:display_draw)
@@ -44,6 +46,7 @@ describe Game do
 			subject.console_io.should_receive(:display_request_for_move).exactly(3).times
 			subject.player_1.should_receive(:get_move).and_return(2,1)
 			subject.player_2.should_receive(:get_move).and_return(4)
+			subject.board.should_receive(:invalid_move?).and_return(false,false,false)
 			subject.board.should_receive(:place_move).exactly(3).times
 			subject.game_rules.should_receive(:win_game?).and_return(true)
 			subject.console_io.should_receive(:display_win)
@@ -57,6 +60,7 @@ describe Game do
 			subject.console_io.should_receive(:display_request_for_move).exactly(3).times
 			subject.player_1.should_receive(:get_move).and_return(2,1)
 			subject.player_2.should_receive(:get_move).and_return(4)
+			subject.board.should_receive(:invalid_move?).and_return(false,false,false)
 			subject.board.should_receive(:place_move).exactly(3).times
 			subject.game_rules.should_receive(:win_game?).and_return(true)
 			subject.console_io.should_receive(:display_win)
@@ -64,15 +68,15 @@ describe Game do
 		end
 
 		it "runs game loop 4 times with 2 invalid moves then game is a draw" do
-			subject.game_rules.should_receive(:game_over?).and_return(false,false,false,true)
+			subject.game_rules.should_receive(:game_over?).and_return(false,false,false,false,true)
 			subject.console_io.should_receive(:display_welcome_message)
-			subject.console_io.should_receive(:display_gameboard).exactly(4).times
-			subject.console_io.should_receive(:display_request_for_move).exactly(5).times
+			subject.console_io.should_receive(:display_gameboard).exactly(5).times
+			subject.console_io.should_receive(:display_request_for_move).exactly(6).times
 			subject.player_1.should_receive(:get_move).and_return(2,100,3)
-			subject.player_2.should_receive(:get_move).and_return(17,4)
-			subject.game_rules.should_receive(:invalid_move?).and_return(false,true,false,true,false)
+			subject.player_2.should_receive(:get_move).and_return(17,4,5)
+			subject.board.should_receive(:invalid_move?).and_return(false,true,false,true,false,false)
 			subject.console_io.should_receive(:display_invalid_selection).exactly(2).times
-			subject.board.should_receive(:place_move).exactly(3).times
+			subject.board.should_receive(:place_move).exactly(4).times
 			subject.game_rules.should_receive(:win_game?).and_return(false)
 			subject.console_io.should_receive(:display_draw)
 			subject.start_game
