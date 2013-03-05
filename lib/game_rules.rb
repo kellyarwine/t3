@@ -8,14 +8,17 @@ class GameRules
 	end
 
 	def game_over?
+		binding.pry
 		board_full? || win_game?
 	end
 
 	def board_full?
+		binding.pry
 		@board.spaces.select { |space| space =~ /\d/ } == []
 	end
 
 	def win_game?
+		binding.pry
 		winning_gamepiece != nil
 	end
 

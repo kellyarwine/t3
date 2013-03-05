@@ -9,8 +9,15 @@ describe T3::Minimax do
   it "scores a move when given a board of spaces" do
     subject.board.spaces = ["x","o","x","x","o","6","7","8","9"]
     # subject.board.spaces = ["x","o","x",
-                            # "x","x","6",
+                            # "x","o","6",
                             # "7","8","9"]
-    subject.run_scorer(board.available_spaces,["o","x"],0).should == "x"
+
+                            # 6 7     => x wins
+                            # 6 8 7 9 => draw
+                            # 6 8 9 7 => x wins
+                            # 6 9 7 8 => draw
+                            # 6 9 8   => o wins                            
+
+    subject.feed_scorer(board.available_spaces,["o","x"],0).should == [-1,2,1,-1]
   end
 end
