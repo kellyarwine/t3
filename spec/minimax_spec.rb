@@ -30,6 +30,6 @@ describe T3::Minimax do
                             # 9 8 6 7 => x wins => -.25
                             # 9 8 7 6 => draw
 
-    subject.feed_scorer(board.available_spaces,["o","x"],0.0).should == [-0.417,0.667,1.0,-0.417]
+    subject.feed_scorer(board.available_spaces,["o","x"],0.0).should == {"6"=>-0.417,"7"=>0.667,"8"=>1.0,"9"=>-0.417}
   end
 end
