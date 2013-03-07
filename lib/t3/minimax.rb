@@ -1,68 +1,89 @@
 module T3
   class Minimax
+    RESET_SCORE_VALUE = 0
+    DRAW_SCORE_VALUE = 0.0
+    WIN_SCORE_VALUE = 1.0
+    LOSE_SCORE_VALUE = -1.0
     attr_accessor :board, :game_rules, :console_io
-  
+
     def initialize(board,game_rules,console_io)
       @board = board
       @game_rules = game_rules
       @console_io = console_io
     end
-  
-    def feed_scorer(available_spaces,gamepieces,score)
-      require 'pry'
-      require 'pry-debugger'  
 
-      score_hash = Hash.new
+    def current_player(gamepieces)
+      gamepieces.first
+    end
 
-      available_spaces.each_with_index do |available_space,i|
-        # binding.pry
-        space = available_spaces[i]
-        score_hash[space] = run_scorer(@board.available_spaces,gamepieces)
-      end
-      score_hash
+    def recursion_depth
+      case @board.available_spaces
+      when between?(8,9) then 2
+      when between?(6,7) then 3
+      when between?(4,5) then 5
+      else
+        @board.available_spaces.length
     end
   
-    def run_scorer(available_spaces,gamepieces,depth=0,p1=nil,p2=nil,p3=nil)
-      score_hash = Hash.new
-      result = 0
+    def get_move(gamepieces)
+      @score_hash = Hash.new
 
-      available_spaces.each_with_index do |available_space, i|
+      @board.available_spaces.each_with_index do |available_space, i|
+        minimax(gamepieces)
+      end
+
+      max_score = @score_hash.values.max
+      @score_hash.select { |k,v| v == max_score }.keys
+                                                 .shift
+                                                 .strip
+    end
+  
+    def minimax(gamepieces,depth=0)
+      score = 0
+
+      @board.available_spaces.each_with_index do |available_space,i|
         move_history = Hash.new
         depth += 1
-        position = @board.spaces.index(available_spaces[i])
-        @board.spaces[position] = gamepieces.first
-        move_history[position+1] = gamepieces.first
 
-        result += run_scorer(@board.available_spaces,gamepieces.reverse,depth,move_history,p1,p2) if not @game_rules.game_over?
+        position = @board.spaces.index(available_space)
+        @board.spaces[position] = current_player(gamepieces)
+        move_history[available_space] = current_player(gamepieces)
+
+        score += minimax(gamepieces.reverse,depth) if not @game_rules.game_over?
+        score += score_win(depth)
+
+        if final_depth_layer?(depth)
+          store_score(depth,score,available_space)
+          score = RESET_SCORE_VALUE
+        end
         
-        result += score_win(depth)
-        
-        space = available_spaces[i]
-        score_hash[space] = result
-        
-        puts "History:     #{result} => #{p3} #{p2} #{p1} #{move_history}"
-        puts "Score Hash:  #{result} => #{score_hash}"
-        # binding.pry if space == "6" || space == "7"
-   
         unwind_board(move_history)
 
-        # move_history = Hash.new
         depth -= 1
       end
-        result
+
+      score
+    end
+
+    def final_depth_layer?(depth)
+      depth == 1
     end
   
     def score_win(depth)
       case @game_rules.winning_gamepiece
-      when nil then 0.0
-      when "o" then 1.0/depth
+      when nil then DRAW_SCORE_VALUE
+      when "o" then WIN_SCORE_VALUE/depth
       else
-        -1.0/depth
+        LOSE_SCORE_VALUE/depth
       end
+    end
+
+    def store_score(depth,score,space)
+      @score_hash[space] = score.round(3)
     end
   
     def unwind_board(move_history)
-      move_history.keys.each { |key| @board.spaces[key-1] = key.to_s }
+      move_history.keys.each { |key| @board.spaces[key.to_i-1] = key }
     end
   end
 end

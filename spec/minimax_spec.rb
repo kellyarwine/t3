@@ -6,30 +6,58 @@ describe T3::Minimax do
   let(:console_io)	{ T3::ConsoleIo.new }
   let(:subject)			{ T3::Minimax.new(board,game_rules,console_io) }
 
-  it "scores a move when given a board of spaces" do
+  it "gets the best move available from a board with 4 available spaces" do
     subject.board.spaces = ["x","o","x","x","o","6","7","8","9"]
     # subject.board.spaces = ["x","o","x",
                             # "x","o","6",
                             # "7","8","9"]
 
-                            # 6 7     => x wins => -.5
-                            # 6 8 7 9 => draw
-                            # 6 8 9 7 => x wins => -.25
-                            # 6 9 7 8 => draw
-                            # 6 9 8   => o wins => .333
-                            # 7 6 8   => o wins => .333
-                            # 7 6 9 8 => draw
-                            # 7 8 6 9 => draw
-                            # 7 8 9 6 => draw
-                            # 7 9 8   => o wins => .333
-                            # 7 9 6 8 => draw
-                            # 8       => o wins => 1.0
-                            # 9 6 7 8 => draw
-                            # 9 6 8   => o wins => .333
-                            # 9 7     => x wins => -.5
-                            # 9 8 6 7 => x wins => -.25
-                            # 9 8 7 6 => draw
-
-    subject.feed_scorer(board.available_spaces,["o","x"],0.0).should == {"6"=>-0.417,"7"=>0.667,"8"=>1.0,"9"=>-0.417}
+    subject.get_move(["o","x"]).should == "8"
   end
+
+  it "gets the best move available from a board with 6 available spaces" do
+    subject.board.spaces = ["x","o","3","x","5","6","7","8","9"]
+    # subject.board.spaces = ["x","o","3",
+                            # "x","5","6",
+                            # "7","8","9"]
+
+    subject.get_move(["x","o"]).should == "7"
+  end
+
+  it "gets the best move available from a board with 5 available spaces" do
+    subject.board.spaces = ["x","o","3","o","x","6","7","8","9"]
+    # subject.board.spaces = ["x","o","3",
+                            # "o","x","6",
+                            # "7","8","9"]
+
+    subject.get_move(["x","o"]).should == "9"
+  end
+
+  it "gets the best move available from a board with 7 available spaces" do
+    subject.board.spaces = ["x","o","3","4","5","6","7","8","9"]
+    # subject.board.spaces = ["1","2","3",
+                            # "4","5","6",
+                            # "7","8","9"]
+
+    subject.get_move(["x","o"]).should == "3"
+  end
+
+  it "gets the best move available from a board with 8 available spaces" do
+    subject.board.spaces = ["x","2","3","4","5","6","7","8","9"]
+    # subject.board.spaces = ["x","2","3",
+                            # "4","5","6",
+                            # "7","8","9"]
+
+    subject.get_move(["o","x"]).should == "5"
+  end
+
+  xit "gets the best move available from a board with 8 available spaces" do
+    subject.board.spaces = ["1","2","3","4","5","6","7","8","9"]
+    # subject.board.spaces = ["1","2","3",
+                            # "4","5","6",
+                            # "7","8","9"]
+
+    subject.get_move(["o","x"]).should == "5"
+  end
+
 end
