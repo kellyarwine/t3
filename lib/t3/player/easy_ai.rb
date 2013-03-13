@@ -11,8 +11,8 @@ module T3
         false
       end
     
-      def get_move(available_spaces)
-        available_spaces.sample.to_i
+      def get_move(board)
+        board.available_spaces_by_name.sample.to_i
       end
     end
   end

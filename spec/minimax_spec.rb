@@ -96,19 +96,10 @@ describe T3::Player::Minimax do
   end
 
   it "gets the best move available from a board with 8 available spaces" do
-    subject.board.spaces = ["x","o","3","4","5","6","7","8","9"]
-    # subject.board.spaces = ["x","o","3",
+    subject.board.spaces = ["o","2","3","4","5","6","7","8","9"]
+    # subject.board.spaces = ["o","2","3",
                             # "4","5","6",
                             # "7","8","9"]
-
-    subject.get_move(board,["x","o"]).should == 5
-  end
-
-  it "gets the best move available from a board with 8 available spaces" do
-    subject.board.spaces = ["o","2","3","4","5","6","7","8","9"]
-    # subject.board.spaces = ["o","2","x",
-                            # "4","o","6",
-                            # "7","8","x"]
 
     subject.get_move(board,["x","o"]).should == 5
   end
@@ -121,14 +112,5 @@ describe T3::Player::Minimax do
 
     subject.get_move(board,["x","o"]).should == 1
   end
-
-  # xit "builds minimax matrix" do
-  #   subject.board.spaces = ["x","o","3","4","x","6","7","8","9"]
-  #   # subject.board.spaces = ["x","o","3",
-  #                           # "4","x","6",
-  #                           # "7","8","9"]
-
-  #   subject.minimax_matrix(board,["x","o"]).should == 1
-  # end
 
 end

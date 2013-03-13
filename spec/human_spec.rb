@@ -23,7 +23,7 @@ describe T3::Player::Human do
 
   it "should make a random move from the spaces available" do
     subject.console_io.should_receive(:get).and_return("2")
-    subject.get_move(["2","3","4","5","6","7","8","9"]).should == 2
+    subject.get_move.should == 2
   end
 
 end

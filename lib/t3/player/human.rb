@@ -12,7 +12,7 @@ module T3
         true
       end
     
-      def get_move(available_spaces,gamepiece)
+      def get_move
         @console_io.get.to_i
       end
     

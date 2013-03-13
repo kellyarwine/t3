@@ -56,7 +56,7 @@ module T3
     end
   
     def display_gameboard
-      @console_io.display_gameboard(board.spaces, board.row_column_size)
+      @console_io.display_gameboard(board.spaces,board.row_column_size)
     end
   
     def display_and_get_move
