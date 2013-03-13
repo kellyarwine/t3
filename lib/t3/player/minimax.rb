@@ -23,7 +23,7 @@ module T3
      end
     
       def get_move(board,gamepieces)
-        @original = board.available_spaces_by_position.length
+        @available_spaces_original_length = board.available_spaces_by_position.length
         score_array = minimax(board,gamepieces)
         max_score_index = score_array.index(score_array.max)
         space = board.available_spaces_by_name[max_score_index].to_i
@@ -55,7 +55,7 @@ module T3
         if @game_rules.game_over?
           score = score_win(depth)
         else
-          scores = minimax(board,gamepieces.reverse,depth) if depth <= maximum_depth(@original)
+          scores = minimax(board,gamepieces.reverse,depth) if depth <= maximum_depth(@available_spaces_original_length)
           scores.empty? ? 0 : pick_score(scores,gamepieces)
         end
       end
