@@ -4,8 +4,8 @@ describe T3::Game do
   let(:console_io)			{ T3::ConsoleIo.new												}
   let(:configurations)	{ Configurations.new(console_io)			}
   let(:board)						{ T3::Board.new(16)												}
-  let(:player_1)				{ T3::EasyAi.new("x",)										}
-  let(:player_2)				{ T3::Human.new("o",console_io)						}
+  let(:player_1)				{ T3::Player::EasyAi.new("x",)										}
+  let(:player_2)				{ T3::Player::Human.new("o",console_io)						}
   let(:game_rules)			{ T3::GameRules.new(board)								}
   let(:players)					{ [player_1, player_2]								}
   let(:subject)					{ T3::Game.new(console_io, double(:configurations, players: players, board: board, game_rules: game_rules, console_io: console_io, player_1: player_1, player_2: player_2))	}

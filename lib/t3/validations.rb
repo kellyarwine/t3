@@ -1,5 +1,4 @@
 require 't3/board'
-require 't3/player'
 require 't3/console_io'
 
 module T3
@@ -36,9 +35,9 @@ module T3
       gamepiece.length == 1
     end 
   
-    # def input_valid_gamepiece?(space)
-    # 	!!(space.to_s =~ /^[1-9]$/)
-    # end
+    def input_valid_gamepiece?(space)
+    	!!(space.to_s =~ /^[1-9]$/)
+    end
   
   end
 end

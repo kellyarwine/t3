@@ -36,12 +36,12 @@ describe T3::ConsoleIo do
     subject.display_invalid_selection
   end
 
-  it "prompts the player for their choice of opponent and receives their input" do
+  it "prompts the player for their choice of opponent" do
     subject.output.should_receive(:puts).with("Choose your opponent:\n\n")
-    subject.output.should_receive(:puts).with("1. Computer\n")
-    subject.output.should_receive(:puts).with("2. Human\n")
-    subject.input.should_receive(:gets).and_return("1\n")
-    subject.display_and_get_opponent.should == "1"
+    subject.output.should_receive(:puts).with("1. Easy AI\n")
+    subject.output.should_receive(:puts).with("2. Hard AI\n")
+    subject.output.should_receive(:puts).with("3. Human\n")
+    subject.display_opponent
   end	
 
   it "prompts the player for their board choice and receives their input" do

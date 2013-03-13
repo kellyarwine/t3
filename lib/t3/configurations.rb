@@ -1,6 +1,7 @@
 require 't3/board'
-require 't3/easy_ai'
-require 't3/human'
+require 't3/player/easy_ai'
+require 't3/player/minimax'
+require 't3/player/human'
 require 't3/game_rules'
 
 module T3
@@ -14,9 +15,9 @@ module T3
     end
   
     def configure_game
+      @game_rules = GameRules.new(board)
       setup_players
       setup_turn_order
-      @game_rules = GameRules.new(board)
     end
   
     def board
@@ -44,21 +45,28 @@ module T3
     end
   
     def get_opponent
-      case @console_io.display_and_get_opponent
-      when "1" then ai_opponent
-      when "2" then human_opponent
+      @console_io.display_opponent
+
+      case @console_io.get
+      when "1" then easy_ai_opponent
+      when "2" then hard_ai_opponent
+      when "3" then human_opponent
       else
         @console_io.display_invalid_selection
         get_opponent
       end
     end
   
-    def ai_opponent
-      EasyAi.new(ai_gamepiece)
+    def easy_ai_opponent
+      Player::EasyAi.new(ai_gamepiece)
     end
-  
+ 
+    def hard_ai_opponent
+      Player::Minimax.new(@board, @game_rules, ai_gamepiece)
+    end
+
     def human_opponent
-      Human.new(display_and_get_human_gamepiece,@console_io)
+      Player::Human.new(display_and_get_human_gamepiece,@console_io)
     end
   
     def display_and_get_human_gamepiece

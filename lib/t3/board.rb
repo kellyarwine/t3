@@ -15,8 +15,12 @@ module T3
       @spaces[space-1] = gamepiece
     end
   
-    def available_spaces
+    def available_spaces_by_name
       @spaces.select { |space| space =~ /\d/ }
+    end
+
+    def available_spaces_by_position
+      (0...@spaces.length).select { |i| @spaces[i] =~ /\d/ }
     end
   
     def invalid_move?(space)
@@ -32,7 +36,7 @@ module T3
     end
   
     def space_open?(space)
-      !!(@spaces[space-1] =~ /\d/)
+      @spaces[space-1] =~ /\d/
     end
   
   end

@@ -21,3 +21,6 @@ TODO:
 
 -seperate unit tests and integration tests
 -------------------------------------------------------------------
+
+--fix gem file
+--remove double exclamation marks

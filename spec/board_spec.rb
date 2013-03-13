@@ -30,9 +30,19 @@ describe T3::Board do
       end
     end
 
-    it "returns an array with all of the spaces available for play" do
+    it "returns an array with all of the spaces (by string value) available for play" do
       subject.spaces = ["1","2","3","4","5","6","7","8","x"]
-      subject.available_spaces.should == ["1","2","3","4","5","6","7","8"]
+      subject.available_spaces_by_name.should == ["1","2","3","4","5","6","7","8"]
+    end
+
+    it "returns an array with all of the spaces (by index value) available for play" do
+      subject.spaces = ["1","2","3","4","5","6","7","8","x"]
+      subject.available_spaces_by_position.should == [0,1,2,3,4,5,6,7]
+    end
+
+    it "returns an array with all of the spaces available for play" do
+      subject.spaces = ["x","o","x","o","x","o","7","8","x"]
+      subject.available_spaces_by_position.should == [6,7]
     end
 
     context "#invalid_move?" do

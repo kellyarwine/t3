@@ -4,6 +4,7 @@ module T3
   
     HUMAN_LABEL = "Human"
     AI_LABEL = "Computer"
+    OPPONENTS = ["Easy AI", "Hard AI", "Human"]
     SPACE_LENGTH = 5
     BLANK_SPACE = " "
     GRID_HORIZONTAL_LINE = "-"
@@ -44,10 +45,9 @@ module T3
       player.human? == true ? HUMAN_LABEL : AI_LABEL
     end
   
-    def display_and_get_opponent
+    def display_opponent
       display("Choose your opponent:\n\n")
-      display("1. #{AI_LABEL}\n")
-      display_and_get("2. #{HUMAN_LABEL}\n")
+      OPPONENTS.each_with_index { |opponent, i| display("#{i+1}. #{opponent}\n") }
     end
   
     def display_and_get_board(board_sizes)

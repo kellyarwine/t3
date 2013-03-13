@@ -4,8 +4,8 @@ describe T3::Configurations do
 
   let(:console_io) { T3::ConsoleIo.new                  }
   let(:board)      { T3::Board.new(9)                   }
-  let(:player_1)   { T3::Human.new("x", console_io)     }
-  let(:player_2)   { T3::EasyAi.new("o")                }
+  let(:player_1)   { T3::Player::Human.new("x", console_io)     }
+  let(:player_2)   { T3::Player::EasyAi.new("o")                }
   let(:subject)	   { T3::Configurations.new(console_io) }
 
   it "instantiates the console_io and gamepieces" do
@@ -58,28 +58,31 @@ describe T3::Configurations do
 
   context "#setup_players" do
     it "sets up player_1 as an AI player and player_2 as a human player" do
-      subject.console_io.should_receive(:display_and_get_opponent).and_return("1")
+      subject.console_io.should_receive(:display_opponent)
+      subject.console_io.should_receive(:get).and_return("1")
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("o")
       subject.setup_players
-      subject.player_1.should be_kind_of(T3::Human)
-      subject.player_2.should be_kind_of(T3::EasyAi)
+      subject.player_1.should be_kind_of(T3::Player::Human)
+      subject.player_2.should be_kind_of(T3::Player::EasyAi)
     end	
 
     it "sets up player_1 and player_2 as human players" do
-      subject.console_io.should_receive(:display_and_get_opponent).and_return("2")
+      subject.console_io.should_receive(:display_opponent)
+      subject.console_io.should_receive(:get).and_return("3")
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","i")
       subject.setup_players
-      subject.player_1.should be_kind_of(T3::Human)
-      subject.player_2.should be_kind_of(T3::Human)
+      subject.player_1.should be_kind_of(T3::Player::Human)
+      subject.player_2.should be_kind_of(T3::Player::Human)
     end
 
     it "sets up player_1 and player_2 as human players after an invalid selection is made" do
-      subject.console_io.should_receive(:display_and_get_opponent).and_return("4","2")
+      subject.console_io.should_receive(:display_opponent).exactly(2).times
+      subject.console_io.should_receive(:get).and_return("4","3")
       subject.console_io.should_receive(:display_invalid_selection)
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","j")
       subject.setup_players
-      subject.player_1.should be_kind_of(T3::Human)
-      subject.player_2.should be_kind_of(T3::Human)
+      subject.player_1.should be_kind_of(T3::Player::Human)
+      subject.player_2.should be_kind_of(T3::Player::Human)
     end
   end
 
