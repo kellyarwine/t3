@@ -79,30 +79,45 @@ describe T3::Validations do
     end
   end
 
-  context "#one_character?" do
-    it "returns true when gamepiece is one character" do
-      subject.one_character?("a").should be_true
+  context "#invalid_gamepiece?" do
+    it "returns true when the gamepiece is not a letter" do
+      subject.invalid_gamepiece?(".").should be_true
     end
 
-    it "returns false when gamepiece is more than one character" do
-      subject.one_character?("ab").should be_false
+    it "returns true when the gamepiece is not a letter" do
+      subject.invalid_gamepiece?("?").should be_true
     end
 
-    it "returns false when gamepiece is more than one character" do
-      subject.one_character?("ppp").should be_false
-    end	
-  end
+    it "returns true when the gamepiece is not a letter" do
+      subject.invalid_gamepiece?(" ").should be_true
+    end
 
-  context "#duplicate_gamepiece?" do
-    it "returns true when the gamepiece is a duplicate" do
-      subject.gamepieces = ["x"]
-      subject.duplicate_gamepiece?("y").should be_false
+    it "returns true when gamepiece is more than one character" do
+      subject.invalid_gamepiece?("ab").should be_true
+    end
+    
+    it "returns true when the gamepiece is more than one character" do
+      subject.invalid_gamepiece?("yy").should be_true
+    end
+
+    it "returns true when the gamepiece is more than one character" do
+      subject.invalid_gamepiece?("..").should be_true
     end
 
     it "returns true when the gamepiece is a duplicate" do
       subject.gamepieces = ["y"]
-      subject.duplicate_gamepiece?("y").should be_true
+      subject.invalid_gamepiece?("y").should be_true
     end
-  end
+
+    it "returns true when the gamepiece is a duplicate" do
+      subject.gamepieces = ["x"]
+      subject.invalid_gamepiece?("x").should be_true
+    end
+
+    it "returns false when gamepiece is one letter that is not a duplicate gamepiece" do
+      subject.gamepieces = ["x"]
+      subject.invalid_gamepiece?("a").should be_false
+    end
+  end  
 
 end

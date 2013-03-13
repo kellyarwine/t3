@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe T3::Player::Human do
-  let(:gamepiece)  { "x"                                    }
-  let(:console_io)	{ T3::ConsoleIo.new 				         		}
-  let(:subject)			{ T3::Player::Human.new("x",console_io) }
+  let(:gamepiece)   { "x"                                   }
+  let(:console_io)  { T3::ConsoleIo.new                     }
+  let(:subject)     { T3::Player::Human.new("x",console_io) }
 
   it 'has a piece' do
     T3::Player::Human.new("x", console_io).piece.should == gamepiece
@@ -15,7 +15,7 @@ describe T3::Player::Human do
 
   it "is a human" do
     subject.human? == true
-  end	
+  end 
 
   it 'has a piece' do
     subject.piece.should == "x"

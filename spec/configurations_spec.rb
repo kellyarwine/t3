@@ -57,7 +57,7 @@ describe T3::Configurations do
   end
 
   context "#setup_players" do
-    it "sets up player_1 as an AI player and player_2 as a human player" do
+    it "sets up player_1 as a human player and player_2 as an easy AI player" do
       subject.console_io.should_receive(:display_opponent)
       subject.console_io.should_receive(:get).and_return("1")
       subject.console_io.should_receive(:display_and_get_gamepiece).and_return("o")
@@ -66,20 +66,20 @@ describe T3::Configurations do
       subject.player_2.should be_kind_of(T3::Player::EasyAi)
     end	
 
-    it "sets up player_1 and player_2 as human players" do
+    it "sets up player_1 as a human player and player_2 as an hard AI player" do
       subject.console_io.should_receive(:display_opponent)
-      subject.console_io.should_receive(:get).and_return("3")
-      subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","i")
+      subject.console_io.should_receive(:get).and_return("2")
+      subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h")
       subject.setup_players
       subject.player_1.should be_kind_of(T3::Player::Human)
-      subject.player_2.should be_kind_of(T3::Player::Human)
+      subject.player_2.should be_kind_of(T3::Player::Minimax)
     end
 
     it "sets up player_1 and player_2 as human players after an invalid selection is made" do
       subject.console_io.should_receive(:display_opponent).exactly(2).times
       subject.console_io.should_receive(:get).and_return("4","3")
       subject.console_io.should_receive(:display_invalid_selection)
-      subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","j")
+      subject.console_io.should_receive(:display_and_get_gamepiece).and_return("h","i")
       subject.setup_players
       subject.player_1.should be_kind_of(T3::Player::Human)
       subject.player_2.should be_kind_of(T3::Player::Human)

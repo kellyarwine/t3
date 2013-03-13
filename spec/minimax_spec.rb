@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe T3::Player::Minimax do
   let(:gamepiece) { "x" }
-  let(:board)				{ T3::Board.new(9) }
-  let(:game_rules)	{ T3::GameRules.new(board) }
+  let(:board)       { T3::Board.new(9) }
+  let(:game_rules)  { T3::GameRules.new(board) }
   let(:piece)       { "x" }
-  let(:subject)			{ T3::Player::Minimax.new(board,game_rules,piece) }
+  let(:subject)     { T3::Player::Minimax.new(board,game_rules,piece) }
 
   it 'has a piece' do
     T3::Player::Minimax.new(board,game_rules,"x").piece.should == gamepiece
@@ -88,8 +88,8 @@ describe T3::Player::Minimax do
 
   it "gets the best move available from a board with 6 available spaces" do
     subject.board.spaces = ["x","o","3","4","x","6","7","8","9"]
-    # subject.board.spaces = ["o","x","3",
-                            # "4","o","6",
+    # subject.board.spaces = ["x","o","3",
+                            # "4","x","6",
                             # "7","8","9"]
 
     subject.get_move(board,["x","o"]).should == 9

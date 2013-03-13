@@ -92,11 +92,11 @@ module T3
     end
   
     def gamepieces
-    	@gamepieces ||= []
+      @gamepieces ||= []
     end
   
     def invalid_gamepiece?(gamepiece)
-       (not valid_letter?(gamepiece) && length_of_one?(gamepiece)) || duplicate_gamepiece?(gamepiece)
+       (not valid_letter?(gamepiece) && one_character?(gamepiece)) || duplicate_gamepiece?(gamepiece)
     end
   
     def duplicate_gamepiece?(gamepiece)
@@ -104,14 +104,14 @@ module T3
     end
   
     def valid_letter?(gamepiece)
-      !!(gamepiece =~ /[a-zA-Z]/)
+      gamepiece =~ /[a-zA-Z]/
     end
   
-    def length_of_one?(gamepiece)
+    def one_character?(gamepiece)
       gamepiece.length == 1
     end
     
-    def setup_turn_order	
+    def setup_turn_order  
       case @console_io.display_and_get_turn_order(@player_1,@player_2)
       when "1" then @players = [player_1,player_2]
       when "2" then @players = [player_2,player_1]

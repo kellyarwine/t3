@@ -14,13 +14,13 @@ module T3
         @piece = piece
       end
 
-     def human?
+      def human?
         false
-     end
+      end
 
-     def current_player(gamepieces)
-      gamepieces.first
-     end
+      def current_player(gamepieces)
+        gamepieces.first
+      end
     
       def get_move(board,gamepieces)
         @available_spaces_original_length = board.available_spaces_by_position.length
@@ -69,13 +69,13 @@ module T3
         end
       end
 
-     def maximum_depth(original)
-      case original
-        when 1..4 then 4
-        when 5..8 then 5
-        else 2
+      def maximum_depth(original)
+        case original
+          when 1..4 then 4
+          when 5..8 then 5
+          else 2
+        end
       end
-    end
 
       def pick_score(scores,gamepieces)
         @piece == gamepieces.first ? scores.min : scores.max

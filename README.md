@@ -24,3 +24,7 @@ TODO:
 
 --fix gem file
 --remove double exclamation marks
+
+-what do you think about gamepiece validations being in configurations and not validation?
+-validations now contains only invalid moves stuff
+(need to delete from either validations or configurations depending on answer)
