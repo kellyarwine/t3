@@ -1,12 +1,15 @@
 require 'spec_helper'
 
 describe T3::Player::Human do
-  let(:gamepiece)   { "x"                                   }
-  let(:console_io)  { T3::ConsoleIo.new                     }
-  let(:subject)     { T3::Player::Human.new("x",console_io) }
+  let(:gamepiece)   { "x"                                                        }
+  let(:gamepieces)  { ["x","o"]                                                  }
+  let(:board)       { T3::Board.new(3)                                           }
+  let(:game_rules)  { T3::GameRules.new(board)                                   }
+  let(:console_io)  { T3::ConsoleIo.new                                          }
+  let(:subject)     { T3::Player::Human.new(gamepiece,"o",game_rules,console_io) }
 
   it 'has a piece' do
-    T3::Player::Human.new("x", console_io).piece.should == gamepiece
+    T3::Player::Human.new(gamepiece,"o",game_rules,console_io).piece.should == gamepiece
   end
 
   it "initializes the console_io, configurations and game" do
@@ -15,7 +18,7 @@ describe T3::Player::Human do
 
   it "is a human" do
     subject.human? == true
-  end 
+  end
 
   it 'has a piece' do
     subject.piece.should == "x"
@@ -23,7 +26,7 @@ describe T3::Player::Human do
 
   it "should make a random move from the spaces available" do
     subject.console_io.should_receive(:get).and_return("2")
-    subject.get_move.should == 2
+    subject.get_move(board,gamepieces).should == 2
   end
 
 end

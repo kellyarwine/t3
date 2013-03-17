@@ -9,7 +9,7 @@ describe T3::ConsoleIo do
   let(:console_io) { ConsoleIo.new }
   let(:player_1)   { double(:EasyAI, human?: false, piece: "x") }
   let(:player_2)   { double(:Human, human?: true) }
-  
+
   it "initializes the input and output" do
     subject.input.should be_kind_of(StringIO)
     subject.output.should be_kind_of(StringIO)
@@ -25,12 +25,6 @@ describe T3::ConsoleIo do
     subject.get
   end
 
-  it "displays a message and returns input" do
-    subject.output.should_receive(:puts).with("Hi")
-    subject.input.should_receive(:gets).and_return("9\n")
-    subject.display_and_get("Hi")
-  end
-
   it "displays an invalid selection message" do
     subject.output.should_receive(:puts).with("Invalid selection.  Please try again.")
     subject.display_invalid_selection
@@ -41,31 +35,28 @@ describe T3::ConsoleIo do
     subject.output.should_receive(:puts).with("1. Easy AI\n")
     subject.output.should_receive(:puts).with("2. Hard AI\n")
     subject.output.should_receive(:puts).with("3. Human\n")
-    subject.display_opponent
-  end	
+    subject.display_opponent_prompt
+  end
 
   it "prompts the player for their board choice and receives their input" do
     subject.output.should_receive(:puts).with("Choose the board size:\n\n")
     subject.output.should_receive(:puts).with("1. 3x3\n")
     subject.output.should_receive(:puts).with("2. 4x4\n")
     subject.output.should_receive(:puts).with("3. 5x5\n")
-    subject.input.should_receive(:gets).and_return("1\n")
-    subject.display_and_get_board(["3x3","4x4","5x5"]).should == "1"
-  end	
+    subject.display_board_size_prompt(["3","4","5"])
+  end
 
 
   it "prompts the player for their gamepiece choice and receives their input" do
-    subject.output.should_receive(:puts).with("Choose any letter to be your gamepiece.")
-    subject.input.should_receive(:gets).and_return("Y\n")
-    subject.display_and_get_gamepiece == "Y"
+    subject.output.should_receive(:puts).with("Choose any letter to be the gamepiece.")
+    subject.display_gamepiece_prompt
   end
 
   it "prompts the player for the turn order" do
     subject.output.should_receive(:puts).with("Choose which player goes first:\n\n")
     subject.output.should_receive(:puts).with("1. Computer\n")
     subject.output.should_receive(:puts).with("2. Human\n")
-    subject.input.should_receive(:gets).and_return("1\n")
-    subject.display_and_get_turn_order(player_1,player_2) == "1"
+    subject.display_turn_order_prompt([player_1,player_2])
   end
 
   it "displays a welcome message" do
@@ -75,9 +66,9 @@ describe T3::ConsoleIo do
 
   it "displays a gameboard" do
     spaces = ["1","2","3","4","5","6","7","8","9"]
-    row_column_size = 3
+    size = 3
     subject.output.should_receive(:puts)
-    subject.display_gameboard(spaces,row_column_size)
+    subject.display_gameboard(spaces,size)
   end
 
   context "#construct gameboard" do
@@ -119,8 +110,7 @@ describe T3::ConsoleIo do
 
   it "prompts the player if they want to play again and receives their input" do
     subject.output.should_receive(:puts).with("Would you like to play again?")
-    subject.input.should_receive(:gets).and_return("Y\n")
-    subject.display_and_get_play_again == "Y"
+    subject.display_play_again_prompt
   end
 
 end

@@ -9,7 +9,7 @@ begin
 rescue LoadError
   puts 'Coverage disabled, enable by installing simplecov'
 end
- 
+
 require 't3/player/easy_ai'
 require 't3/player/human'
 require 't3/player/minimax'

@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 describe T3::Game do
-  let(:console_io)			{ T3::ConsoleIo.new												}
-  let(:configurations)	{ Configurations.new(console_io)			}
-  let(:board)						{ T3::Board.new(16)												}
-  let(:player_1)				{ T3::Player::EasyAi.new("x",)										}
-  let(:player_2)				{ T3::Player::Human.new("o",console_io)						}
-  let(:game_rules)			{ T3::GameRules.new(board)								}
-  let(:players)					{ [player_1, player_2]								}
-  let(:subject)					{ T3::Game.new(console_io, double(:configurations, players: players, board: board, game_rules: game_rules, console_io: console_io, player_1: player_1, player_2: player_2))	}
+  let(:console_io)      { T3::ConsoleIo.new                                     }
+  let(:configurations)  { Configurations.new(console_io)                        }
+  let(:game_rules)      { T3::GameRules.new(board)                              }
+  let(:validations)     { T3::GameRules.new(board)                              }
+  let(:board)           { T3::Board.new(4)                                      }
+  let(:player_1)        { T3::Player::EasyAi.new("x","o",game_rules,console_io) }
+  let(:player_2)        { T3::Player::Human.new("x","o",game_rules,console_io)  }
+  let(:players)         { [player_1, player_2]                                  }
+  let(:subject)					{ T3::Game.new(console_io, double(:configurations, players: players, board: board, game_rules: game_rules, validations: validations, console_io: console_io, player_1: player_1, player_2: player_2))	}
 
 
   context "#run_game" do
@@ -18,9 +19,9 @@ describe T3::Game do
       subject.console_io.should_receive(:display_gameboard).exactly(2).times
       subject.console_io.should_receive(:display_request_for_move)
       subject.player_1.should_receive(:get_move).and_return(2)
-        subject.board.should_receive(:invalid_move?).and_return(false)
+      subject.validations.should_receive(:invalid_move?).and_return(false)
       subject.board.should_receive(:place_move)
-      subject.game_rules.should_receive(:win_game?).and_return(false)			
+      subject.game_rules.should_receive(:win_game?).and_return(false)
       subject.console_io.should_receive(:display_draw)
       subject.start_game
     end
@@ -32,7 +33,7 @@ describe T3::Game do
       subject.console_io.should_receive(:display_request_for_move).exactly(3).times
       subject.player_1.should_receive(:get_move).and_return(2,1)
       subject.player_2.should_receive(:get_move).and_return(4)
-      subject.board.should_receive(:invalid_move?).and_return(false,false,false)
+      subject.validations.should_receive(:invalid_move?).and_return(false,false,false)
       subject.board.should_receive(:place_move).exactly(3).times
       subject.game_rules.should_receive(:win_game?).and_return(false)
       subject.console_io.should_receive(:display_draw)
@@ -46,7 +47,7 @@ describe T3::Game do
       subject.console_io.should_receive(:display_request_for_move).exactly(3).times
       subject.player_1.should_receive(:get_move).and_return(2,1)
       subject.player_2.should_receive(:get_move).and_return(4)
-      subject.board.should_receive(:invalid_move?).and_return(false,false,false)
+      subject.validations.should_receive(:invalid_move?).and_return(false,false,false)
       subject.board.should_receive(:place_move).exactly(3).times
       subject.game_rules.should_receive(:win_game?).and_return(true)
       subject.console_io.should_receive(:display_win)
@@ -60,7 +61,7 @@ describe T3::Game do
       subject.console_io.should_receive(:display_request_for_move).exactly(3).times
       subject.player_1.should_receive(:get_move).and_return(2,1)
       subject.player_2.should_receive(:get_move).and_return(4)
-      subject.board.should_receive(:invalid_move?).and_return(false,false,false)
+      subject.validations.should_receive(:invalid_move?).and_return(false,false,false)
       subject.board.should_receive(:place_move).exactly(3).times
       subject.game_rules.should_receive(:win_game?).and_return(true)
       subject.console_io.should_receive(:display_win)
@@ -74,7 +75,7 @@ describe T3::Game do
       subject.console_io.should_receive(:display_request_for_move).exactly(6).times
       subject.player_1.should_receive(:get_move).and_return(2,100,3)
       subject.player_2.should_receive(:get_move).and_return(17,4,5)
-      subject.board.should_receive(:invalid_move?).and_return(false,true,false,true,false,false)
+      subject.validations.should_receive(:invalid_move?).and_return(false,true,false,true,false,false)
       subject.console_io.should_receive(:display_invalid_selection).exactly(2).times
       subject.board.should_receive(:place_move).exactly(4).times
       subject.game_rules.should_receive(:win_game?).and_return(false)

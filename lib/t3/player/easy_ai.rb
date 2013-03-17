@@ -3,15 +3,15 @@ module T3
     class EasyAi
       attr_reader :piece
 
-      def initialize(piece)
-        @piece = piece
+      def initialize(human_piece,ai_piece,game_rules,console_io)
+        @piece = ai_piece
       end
-    
+
       def human?
         false
       end
-    
-      def get_move(board)
+
+      def get_move(board,gamepieces)
         board.available_spaces_by_name.sample.to_i
       end
     end

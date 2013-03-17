@@ -11,14 +11,16 @@ describe T3::GameRunner do
     it "plays a game once with the choice not to play again" do
       subject.configurations.should_receive(:configure_game)
       subject.game.should_receive(:start_game)
-      subject.console_io.should_receive(:display_and_get_play_again).and_return("n")
+      subject.console_io.should_receive(:display_play_again_prompt)
+      subject.console_io.should_receive(:get).and_return("n")
       subject.play_game
     end
 
     it "plays 3 games answering the play again message in different ways (uppercase and lowercase)" do
       subject.configurations.should_receive(:configure_game).exactly(3).times
       subject.game.should_receive(:start_game).exactly(3).times
-      subject.console_io.should_receive(:display_and_get_play_again).and_return("y","Y","n")
+      subject.console_io.should_receive(:display_play_again_prompt).exactly(3).times
+      subject.console_io.should_receive(:get).and_return("y","Y","n")
       subject.play_game
     end
 
@@ -26,7 +28,8 @@ describe T3::GameRunner do
       subject.configurations.should_receive(:configure_game).exactly(3).times
       subject.game.should_receive(:start_game).exactly(3).times
       subject.console_io.should_receive(:display_invalid_selection).exactly(2).times
-      subject.console_io.should_receive(:display_and_get_play_again).and_return("y","z","100","Y","n")
+      subject.console_io.should_receive(:display_play_again_prompt).exactly(5).times
+      subject.console_io.should_receive(:get).and_return("y","z","100","Y","n")
       subject.play_game
     end
   end

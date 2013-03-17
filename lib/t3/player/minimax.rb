@@ -1,17 +1,16 @@
 module T3
-  module Player  
+  module Player
     class Minimax
       RESET_SCORE_VALUE = 0
       DRAW_SCORE_VALUE = 0.0
       WIN_SCORE_VALUE = 1.0
       LOSE_SCORE_VALUE = -1.0
 
-      attr_accessor :board, :game_rules, :piece
+      attr_accessor :game_rules, :piece
 
-      def initialize(board,game_rules,piece)
-        @board = board
+      def initialize(human_piece,ai_piece,game_rules,console_io)
         @game_rules = game_rules
-        @piece = piece
+        @piece = ai_piece
       end
 
       def human?
@@ -21,14 +20,14 @@ module T3
       def current_player(gamepieces)
         gamepieces.first
       end
-    
+
       def get_move(board,gamepieces)
         @available_spaces_original_length = board.available_spaces_by_position.length
         score_array = minimax(board,gamepieces)
         max_score_index = score_array.index(score_array.max)
         space = board.available_spaces_by_name[max_score_index].to_i
       end
-    
+
       def minimax(board,gamepieces,depth=0)
         score_array = Array.new
         board.available_spaces_by_position.each do |available_space|
@@ -59,7 +58,7 @@ module T3
           scores.empty? ? 0 : pick_score(scores,gamepieces)
         end
       end
-    
+
       def score_win(depth)
         case @game_rules.winning_gamepiece
         when nil then DRAW_SCORE_VALUE
@@ -80,6 +79,7 @@ module T3
       def pick_score(scores,gamepieces)
         @piece == gamepieces.first ? scores.min : scores.max
       end
+
     end
   end
 end

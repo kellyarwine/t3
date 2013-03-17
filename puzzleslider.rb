@@ -1,0 +1,3 @@
+class PuzzleSlider
+
+end

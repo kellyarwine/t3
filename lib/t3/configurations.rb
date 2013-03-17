@@ -1,125 +1,85 @@
 require 't3/board'
-require 't3/player/easy_ai'
-require 't3/player/minimax'
-require 't3/player/human'
 require 't3/game_rules'
+require 't3/validations'
+require 't3/player/player_builder'
 
 module T3
   class Configurations
-    attr_accessor :board, :gamepieces, :console_io, :player_1, :player_2, :players, :game_rules
-  
-    BOARD_SIZES = ["3x3","4x4","5x5"]
-  
+    attr_accessor :board, :console_io, :player_1, :player_2, :players, :game_rules, :player_builder, :validations
+
+    HUMAN_PLAYER_OPTION = "3"
+    BOARD_SIZES = {
+      "1" => 3,
+      "2" => 4,
+      "3" => 5
+    }
+    PLAYER_TYPES = {
+      "1" => Player::EasyAi,
+      "2" => Player::Minimax,
+      "3" => Player::Human
+    }
+
     def initialize(console_io)
       @console_io = console_io
     end
-  
+
     def configure_game
-      @game_rules = GameRules.new(board)
+      build_board
+      @game_rules = GameRules.new(@board)
+      @validations = Validations.new(@board)
+      @player_builder = T3::Player::PlayerBuilder.new(@console_io,@validations)
       setup_players
       setup_turn_order
     end
-  
-    def board
-      @board ||= Board.new(get_board_size)
+
+    def build_board
+      @board = Board.new(board_size)
     end
-  
-    def get_board_size
-      case @console_io.display_and_get_board(BOARD_SIZES)
-      when "1" then evaluate_board_size(BOARD_SIZES[0])
-      when "2" then evaluate_board_size(BOARD_SIZES[1])
-      when "3" then evaluate_board_size(BOARD_SIZES[2])
-      else
+
+    def board_size
+      @console_io.display_board_size_prompt(BOARD_SIZES.values)
+
+      board_size_selection = @console_io.get
+
+      if BOARD_SIZES[board_size_selection].nil?
         @console_io.display_invalid_selection
-        get_board_size
+        board_size
+      else
+        BOARD_SIZES[board_size_selection].to_i
       end
     end
-  
-    def evaluate_board_size(board_size)
-      eval(board_size.gsub("x","*"))
-    end
-  
+
     def setup_players
-      @player_2 = get_opponent
-      @player_1 = human_opponent
+      @player_1 = @player_builder.create(HUMAN_PLAYER_OPTION,@game_rules)
+      @player_2 = @player_builder.create(opponent,@game_rules)
+      @players = [@player_1,@player_2]
     end
-  
-    def get_opponent
-      @console_io.display_opponent
+
+    def opponent
+    @console_io.display_opponent_prompt
+
+    opponent_selection = @console_io.get
+
+    if PLAYER_TYPES[opponent_selection].nil?
+      @console_io.display_invalid_selection
+      opponent
+    else
+      PLAYER_TYPES[opponent_selection]
+    end
+
+    end
+
+    def setup_turn_order
+      @console_io.display_turn_order_prompt(@players)
 
       case @console_io.get
-      when "1" then easy_ai_opponent
-      when "2" then hard_ai_opponent
-      when "3" then human_opponent
-      else
-        @console_io.display_invalid_selection
-        get_opponent
-      end
-    end
-  
-    def easy_ai_opponent
-      Player::EasyAi.new(ai_gamepiece)
-    end
- 
-    def hard_ai_opponent
-      Player::Minimax.new(@board, @game_rules, ai_gamepiece)
-    end
-
-    def human_opponent
-      Player::Human.new(display_and_get_human_gamepiece,@console_io)
-    end
-  
-    def display_and_get_human_gamepiece
-      gamepiece = @console_io.display_and_get_gamepiece.downcase
-  
-      if invalid_gamepiece?(gamepiece)
-        @console_io.display_invalid_selection
-        display_and_get_human_gamepiece
-      else
-        store_gamepiece(gamepiece)
-        gamepiece
-      end
-    end
-  
-    def ai_gamepiece
-      gamepiece = "x"
-      store_gamepiece(gamepiece)
-      gamepiece
-    end
-  
-    def store_gamepiece(gamepiece)
-      gamepieces << gamepiece
-    end
-  
-    def gamepieces
-      @gamepieces ||= []
-    end
-  
-    def invalid_gamepiece?(gamepiece)
-       (not valid_letter?(gamepiece) && one_character?(gamepiece)) || duplicate_gamepiece?(gamepiece)
-    end
-  
-    def duplicate_gamepiece?(gamepiece)
-      gamepieces.include? gamepiece
-    end
-  
-    def valid_letter?(gamepiece)
-      gamepiece =~ /[a-zA-Z]/
-    end
-  
-    def one_character?(gamepiece)
-      gamepiece.length == 1
-    end
-    
-    def setup_turn_order  
-      case @console_io.display_and_get_turn_order(@player_1,@player_2)
-      when "1" then @players = [player_1,player_2]
-      when "2" then @players = [player_2,player_1]
+      when "1" then @players
+      when "2" then @players.reverse!
       else
         @console_io.display_invalid_selection
         setup_turn_order
       end
     end
-  
+
   end
 end

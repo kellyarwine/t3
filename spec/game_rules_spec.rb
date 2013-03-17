@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe T3::GameRules do
   context "with a board_size of 3x3" do
-    let(:board) 				{ T3::Board.new(9) }
+    let(:board) 				{ T3::Board.new(3) }
     let(:subject) 			{ T3::GameRules.new(board) }
-    
+
     it "initializes board" do
       subject.board.should be_kind_of(T3::Board)
     end
@@ -23,7 +23,7 @@ describe T3::GameRules do
       it "returns true when board is not full and there are wins" do
         subject.board.spaces = ["x","2","o","o","x","o","o","o","x"]
         subject.game_over?.should be_true
-      end		
+      end
 
       it "returns true when board is full and there are wins" do
         subject.board.spaces = ["x","o","o","o","x","o","x","o","x"]
@@ -53,7 +53,7 @@ describe T3::GameRules do
         subject.board.spaces = ["x","x","x","4","o","o","o","x","x"]
         subject.win_game?.should be_true
       end
-    end		
+    end
 
     context "#winning_gamepiece" do
       it "returns x when there are 3 x's in a row" do
@@ -84,7 +84,7 @@ describe T3::GameRules do
       it "returns false when a game is a draw" do
         board.spaces = ["x","o","x","o","x","o","o","x","o"]
         subject.winning_gamepiece.should be_nil
-      end				
+      end
     end
 
     it "returns an array of 3 arrays with the values from each row contained in one array" do
@@ -95,7 +95,7 @@ describe T3::GameRules do
     it "returns an array of 3 arrays with the values from each column contained in one array" do
       board.spaces = ["x","x","x","o","x","o","x","x","x"]
       subject.column_contents.should == [["x","o","x"],["x","x","x"],["x","o","x"]]
-    end	
+    end
 
     context "#left_diagonal_contents" do
       it "returns an array of 1 array with the values from the left diagonal" do
@@ -123,8 +123,8 @@ describe T3::GameRules do
   end
 
   context "with a board_size of 4x4" do
-    let(:board) 				{ T3::Board.new(16) }
-    let(:subject) 			{ T3::GameRules.new(board) }	
+    let(:board) 				{ T3::Board.new(4) }
+    let(:subject) 			{ T3::GameRules.new(board) }
 
     context "#game_over?" do
       it "returns true when board is full and there are no wins" do
@@ -148,7 +148,7 @@ describe T3::GameRules do
     it "returns an array of 4 arrays with the values from each column contained in one array" do
       board.spaces = ["x","o","x","o","x","o","x","o","x","x","o","x","o","x","o","x"]
       subject.column_contents.should == [["x","x","x","o"],["o","o","x","x"],["x","x","o","o"],["o","o","x","x"]]
-    end	
+    end
 
     it "returns an array of 1 array with the values from the left diagonal" do
       board.spaces = ["x","o","x","o","x","o","x","o","x","x","o","x","o","x","o","x"]
@@ -162,9 +162,9 @@ describe T3::GameRules do
   end
 
   context "with a board_size of 5x5" do
-    let(:board) 				{ T3::Board.new(25) }
+    let(:board) 				{ T3::Board.new(5) }
     let(:subject) 			{ T3::GameRules.new(board) }
-    
+
     context "#game_over?" do
       it "returns true when board is full and there are no wins" do
         subject.board.spaces = ["x","x","o","o","x","o","o","x","x","o","x","o","x","o","x","o","o","x","o","x","o","x","o","x","o"]
@@ -187,7 +187,7 @@ describe T3::GameRules do
     it "returns an array of 5 arrays with the values from each column contained in one array" do
       subject.board.spaces = ["x","x","o","o","x","o","x","x","x","o","x","o","x","o","x","o","o","x","x","x","o","x","o","x","x"]
       subject.column_contents.should == [["x","o","x","o","o"],["x","x","o","o","x"],["o","x","x","x","o"],["o","x","o","x","x"],["x","o","x","x","x"]]
-    end	
+    end
 
     it "returns an array of 1 array with the values from the left diagonal" do
       subject.board.spaces = ["x","x","o","o","x","o","x","x","x","o","x","o","x","o","x","o","o","x","x","x","o","x","o","x","o"]
@@ -200,4 +200,4 @@ describe T3::GameRules do
     end
   end
 
-end	
+end
