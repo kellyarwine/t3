@@ -2,14 +2,17 @@ require 'spec_helper'
 
 describe T3::Game do
 
-  let(:board)           { T3::Board.new(4)                                                              }
-  let(:game_rules)      { T3::GameRules.new(board)                                                      }
-  let(:validations)     { T3::Validations.new(board)                                                    }
-  let(:console_io)      { T3::ConsoleIo.new                                                             }
-  let(:player_1)        { T3::Player::PlayerContext.new(T3::Player::HumanStrategy.new("x",console_io))  }
-  let(:player_2)        { T3::Player::PlayerContext.new(T3::Player::EasyAiStrategy.new("o"))            }
-  let(:players)         { [player_1, player_2]                                                          }
-  let(:subject)         { T3::Game.new(console_io, double(:configurations, players: players, board: board, game_rules: game_rules, validations: validations, console_io: console_io, player_1: player_1, player_2: player_2)) }
+  let(:board)               { T3::Board.new(4)                                                                }
+  let(:game_rules)          { T3::GameRules.new(board)                                                        }
+  let(:validations)         { T3::Validations.new(board)                                                      }
+  let(:console_io)          { T3::ConsoleIo.new                                                               }
+  let(:player_1)            { T3::Player::PlayerContext.new(T3::Player::HumanStrategy.new("x",console_io))    }
+  let(:player_2)            { T3::Player::PlayerContext.new(T3::Player::EasyAiStrategy.new("o"))              }
+  let(:player_3)            { T3::Player::PlayerContext.new(T3::Player::MinimaxStrategy.new("o",game_rules))  }
+  let(:players)             { [player_1,player_2]                                                             }
+  let(:players_2)           { [player_3,player_1]                                                             }
+  let(:subject)             { T3::Game.new(console_io, double(:configurations, players: players, board: board, game_rules: game_rules, validations: validations, console_io: console_io, player_1: player_1, player_2: player_2))   }
+  let(:game_with_player_3)  { T3::Game.new(console_io, double(:configurations, players: players_2, board: board, game_rules: game_rules, validations: validations, console_io: console_io, player_1: player_1, player_2: player_3)) }
 
   it "fires all 'start game' events when starting game" do
     subject.console_io.should_receive(:display_welcome_message)
@@ -42,12 +45,28 @@ describe T3::Game do
     end
   end
 
-  it "returns a move" do
-    subject.console_io.should_receive(:display_request_for_move)
-    subject.switch_current_player
-    subject.get_move
-    subject.move.should >= 1
-    subject.move.should < board.size**2
+  context "#get_move" do
+    it "returns a move for an easy AI player" do
+      subject.console_io.should_receive(:display_request_for_move)
+      subject.switch_current_player
+      subject.get_move
+      subject.move.should >= 1
+      subject.move.should <= board.size**2
+    end
+
+    it "returns a move for a human player" do
+      subject.console_io.should_receive(:display_request_for_move)
+      subject.console_io.should_receive(:get).and_return("10\n")
+      subject.get_move
+      subject.move.should == 10
+    end
+
+    it "returns a move for a hard AI player" do
+      game_with_player_3.console_io.should_receive(:display_request_for_move)
+      game_with_player_3.get_move
+      game_with_player_3.move.should >= 1
+      game_with_player_3.move.should <= board.size**2
+    end
   end
 
   context "integration testing" do

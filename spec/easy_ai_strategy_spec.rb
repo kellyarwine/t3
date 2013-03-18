@@ -15,7 +15,7 @@ describe T3::Player::EasyAiStrategy do
   end
 
   it "should make a random move from the spaces available" do
-    subject.move(board,["x","o"]).should be_kind_of(Integer)
+    subject.move(board).should be_kind_of(Integer)
   end
 
 end

@@ -2,24 +2,42 @@ require 'spec_helper'
 
 describe T3::Player::PlayerContext do
 
-  let(:player_strategy) { T3::Player::EasyAiStrategy.new("x")            }
-  let(:board)           { T3::Board.new(3)                               }
-  let(:subject)         { T3::Player::PlayerContext.new(player_strategy) }
+  let(:player_strategy_1) { T3::Player::EasyAiStrategy.new("x")              }
+  let(:player_strategy_2) { T3::Player::MinimaxStrategy.new("x",game_rules)  }
+  let(:player_strategy_3) { T3::Player::HumanStrategy.new("x",console_io)    }
+  let(:board)             { T3::Board.new(3)                                 }
+  let(:game_rules)        { T3::GameRules.new(board)                         }
+  let(:console_io)        { T3::ConsoleIo.new                                }
+  let(:gamepieces)        { ["x","o"]                                        }
+  let(:player_context_1)  { T3::Player::PlayerContext.new(player_strategy_1) }
+  let(:player_context_2)  { T3::Player::PlayerContext.new(player_strategy_2) }
+  let(:player_context_3)  { T3::Player::PlayerContext.new(player_strategy_3) }
 
   it "initializes a strategy" do
-    subject.strategy.should == player_strategy
+    player_context_1.strategy.should == player_strategy_1
   end
 
   it "has a piece" do
-    subject.piece.should == "x"
+    player_context_1.piece.should == "x"
   end
 
   it "is not a human" do
-    subject.human?.should == false
+    player_context_1.human?.should == false
   end
 
-  it "should return a move" do
-    subject.move(board,["x","o"]).should be_kind_of(Integer)
+  it "should return a move for easy AI if the board is passed in" do
+    player_context_1.move(board).should >= 1
+    player_context_1.move(board).should <= board.size**2
+  end
+
+  it "should return a move for hard AI if the board and gamepieces are passed in" do
+    player_context_2.move(board,gamepieces).should >= 1
+    player_context_2.move(board,gamepieces).should <= board.size**2
+  end
+
+  it "should return a move for huamn if no arguments are passed in" do
+    player_strategy_3.console_io.should_receive(:get).and_return("10")
+    player_context_3.move.should == 10
   end
 
 end
