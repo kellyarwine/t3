@@ -21,8 +21,8 @@ module T3
         @strategy.human?
       end
 
-      def move(board,gamepieces)
-        @strategy.move(board,gamepieces)
+      def move(*args)
+        @strategy.move(*args)
       end
     end
   end

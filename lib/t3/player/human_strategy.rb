@@ -12,7 +12,7 @@ module T3
         true
       end
 
-      def move(board,gamepieces)
+      def move
         @console_io.get.to_i
       end
 

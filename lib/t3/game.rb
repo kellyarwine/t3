@@ -43,7 +43,6 @@ module T3
     def run_game
       while game_over? == false
         display_gameboard
-        prompt_for_move
         get_move
         place_move
         switch_current_player
@@ -64,12 +63,9 @@ module T3
       @console_io.display_gameboard(board.spaces,board.size)
     end
 
-    def prompt_for_move
-      @console_io.display_request_for_move(current_player)
-    end
-
     def get_move
-      @move = current_player.move(move_constructor)
+      @console_io.display_request_for_move(current_player)
+      @move = move_constructor
 
       if validations.invalid_move?(@move)
         @console_io.display_invalid_selection
@@ -79,9 +75,9 @@ module T3
 
     def move_constructor
       case current_player.strategy
-        when kind_of?(T3::Player::EasyAiStrategy) then [board]
-        when kind_of?(T3::Player::MinimaxStrategy) then [board,[player_2.piece,player_1.piece]]
-        when kind_of?(T3::Player::HumanStrategy) then []
+        when T3::Player::EasyAiStrategy then current_player.move(board)
+        when T3::Player::MinimaxStrategy then current_player.move(board,[player_2.piece,player_1.piece])
+        when T3::Player::HumanStrategy then current_player.move
       end
     end
 

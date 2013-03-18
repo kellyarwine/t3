@@ -43,10 +43,10 @@ describe T3::Game do
   end
 
   it "returns a move" do
-    subject.switch_current_player
     subject.console_io.should_receive(:display_request_for_move)
+    subject.switch_current_player
     subject.get_move
-    subject.move.should > 1
+    subject.move.should >= 1
     subject.move.should < board.size**2
   end
 
