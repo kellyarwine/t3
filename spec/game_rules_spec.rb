@@ -5,7 +5,7 @@ describe T3::GameRules do
     let(:board) 				{ T3::Board.new(3) }
     let(:subject) 			{ T3::GameRules.new(board) }
 
-    it "initializes board" do
+    it "has a board" do
       subject.board.should be_kind_of(T3::Board)
     end
 

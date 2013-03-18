@@ -2,6 +2,12 @@ module T3
   class Game
     attr_accessor :game_rules, :validations, :console_io, :board, :configurations
 
+    # MOVE_CONSTRUCTOR = {
+    #   kind_of?(T3::Player::EasyAiStrategy) => [@configurations.board],
+    #   kind_of?(T3::Player::MinimaxStrategy) => [@configurations.board,[@configurations.player_2.piece,@configurations.player_1.piece]],
+    #   kind_of?(T3::Player::HumanStrategy) => [nil]
+    # }
+
     def initialize(console_io,configurations)
       @console_io = console_io
       @configurations = configurations
@@ -65,7 +71,10 @@ module T3
 
     def get_move
       @console_io.display_request_for_move(current_player)
-      @move = current_player.get_move(board,[player_2.piece,player_1.piece])
+      # argument_array = MOVE_CONSTRUCTOR[current_player.strategy]
+      # arguments << argument_array.each { |argument| argument + "," }
+      # @move = current_player.move(arguements)
+      @move = current_player.move(board,[player_2.piece,player_1.piece])
 
       if validations.invalid_move?(@move)
         @console_io.display_invalid_selection

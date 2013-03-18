@@ -10,9 +10,10 @@ rescue LoadError
   puts 'Coverage disabled, enable by installing simplecov'
 end
 
-require 't3/player/easy_ai'
-require 't3/player/human'
-require 't3/player/minimax'
+require 't3/player/easy_ai_strategy'
+require 't3/player/human_strategy'
+require 't3/player/minimax_strategy'
+require 't3/player/player_context'
 require 't3/board'
 require 't3/configurations'
 require 't3/console_io'

@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe T3::ConsoleIo do
+
   before {
     subject.input = StringIO.new
     subject.output = StringIO.new
   }
 
-  let(:console_io) { ConsoleIo.new }
-  let(:player_1)   { double(:EasyAI, human?: false, piece: "x") }
-  let(:player_2)   { double(:Human, human?: true) }
+  let(:player_1)  { double(:EasyAIStrategy, human?: false, piece: "x") }
+  let(:player_2)  { double(:HumanStrategy, human?: true, piece: "o")   }
 
-  it "initializes the input and output" do
+  it "has an input and output" do
     subject.input.should be_kind_of(StringIO)
     subject.output.should be_kind_of(StringIO)
   end

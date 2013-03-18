@@ -1,6 +1,7 @@
 require 't3/validations'
 
 describe T3::Validations do
+
   let(:board) 	   { T3::Board.new(3)           }
   let(:console_io) { T3::ConsoleIo.new(board)   }
   let(:subject)    { T3::Validations.new(board) }

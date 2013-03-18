@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe T3::GameRunner do
+
   it "initializes the console_io, configurations and game" do
     subject.console_io.should be_kind_of(T3::ConsoleIo)
     subject.configurations.should be_kind_of(T3::Configurations)

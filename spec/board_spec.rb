@@ -5,13 +5,14 @@ describe T3::Board do
   context "with a board_size of 3x3" do
     let(:subject) { T3::Board.new(3) }
 
+    it "has a size" do
+      subject.size.should == 3
+    end
+
     it "has an array of spaces that are strings" do
       subject.spaces = ["1","2","3","4","5","6","7","8","9"]
     end
 
-    it "has a size of the board" do
-      subject.size.should == 3
-    end
 
     it "returns the number of spaces in the row/column" do
       subject.size.should == 3
