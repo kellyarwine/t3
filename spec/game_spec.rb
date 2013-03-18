@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe T3::Game do
 
-  let(:players)         { [player_1, player_2]                                                          }
   let(:board)           { T3::Board.new(4)                                                              }
   let(:game_rules)      { T3::GameRules.new(board)                                                      }
   let(:validations)     { T3::Validations.new(board)                                                    }
   let(:console_io)      { T3::ConsoleIo.new                                                             }
   let(:player_1)        { T3::Player::PlayerContext.new(T3::Player::HumanStrategy.new("x",console_io))  }
   let(:player_2)        { T3::Player::PlayerContext.new(T3::Player::EasyAiStrategy.new("o"))            }
+  let(:players)         { [player_1, player_2]                                                          }
   let(:subject)         { T3::Game.new(console_io, double(:configurations, players: players, board: board, game_rules: game_rules, validations: validations, console_io: console_io, player_1: player_1, player_2: player_2)) }
 
   it "fires all 'start game' events when starting game" do
@@ -40,6 +40,14 @@ describe T3::Game do
       subject.switch_current_player
       subject.players.should == [player_1,player_2]
     end
+  end
+
+  it "returns a move" do
+    subject.switch_current_player
+    subject.console_io.should_receive(:display_request_for_move)
+    subject.get_move
+    subject.move.should > 1
+    subject.move.should < board.size**2
   end
 
   context "integration testing" do

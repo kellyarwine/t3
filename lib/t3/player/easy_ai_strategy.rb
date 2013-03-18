@@ -11,7 +11,7 @@ module T3
         false
       end
 
-      def move(board,gamepieces)
+      def move(board)
         board.available_spaces_by_name.sample.to_i
       end
     end

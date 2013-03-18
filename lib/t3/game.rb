@@ -1,12 +1,6 @@
 module T3
   class Game
-    attr_accessor :game_rules, :validations, :console_io, :board, :configurations
-
-    # MOVE_CONSTRUCTOR = {
-    #   kind_of?(T3::Player::EasyAiStrategy) => [@configurations.board],
-    #   kind_of?(T3::Player::MinimaxStrategy) => [@configurations.board,[@configurations.player_2.piece,@configurations.player_1.piece]],
-    #   kind_of?(T3::Player::HumanStrategy) => [nil]
-    # }
+    attr_accessor :game_rules, :validations, :console_io, :board, :configurations, :move
 
     def initialize(console_io,configurations)
       @console_io = console_io
@@ -49,6 +43,7 @@ module T3
     def run_game
       while game_over? == false
         display_gameboard
+        prompt_for_move
         get_move
         place_move
         switch_current_player
@@ -69,16 +64,24 @@ module T3
       @console_io.display_gameboard(board.spaces,board.size)
     end
 
-    def get_move
+    def prompt_for_move
       @console_io.display_request_for_move(current_player)
-      # argument_array = MOVE_CONSTRUCTOR[current_player.strategy]
-      # arguments << argument_array.each { |argument| argument + "," }
-      # @move = current_player.move(arguements)
-      @move = current_player.move(board,[player_2.piece,player_1.piece])
+    end
+
+    def get_move
+      @move = current_player.move(move_constructor)
 
       if validations.invalid_move?(@move)
         @console_io.display_invalid_selection
         get_move
+      end
+    end
+
+    def move_constructor
+      case current_player.strategy
+        when kind_of?(T3::Player::EasyAiStrategy) then [board]
+        when kind_of?(T3::Player::MinimaxStrategy) then [board,[player_2.piece,player_1.piece]]
+        when kind_of?(T3::Player::HumanStrategy) then []
       end
     end
 
