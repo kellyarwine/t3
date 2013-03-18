@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rvm use 1.9.3-p194@t3_gemset
+rvm use 1.9.3-p374@t3_gemset --create
