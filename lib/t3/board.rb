@@ -4,7 +4,7 @@ module T3
 
     def initialize(size)
       @size = size
-      @spaces = *("1"..(@size**2).to_s)
+      @spaces = ("1"..(@size**2).to_s).to_a
     end
 
     def place_move(gamepiece, space)
