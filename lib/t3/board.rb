@@ -1,13 +1,13 @@
 module T3
   class Board
-    attr_accessor :spaces, :size, :size
+    attr_accessor :spaces, :size
 
     def initialize(size)
       @size = size
       @spaces = ("1"..(@size**2).to_s).to_a
     end
 
-    def place_move(gamepiece, space)
+    def place_move(gamepiece,space)
       @spaces[space-1] = gamepiece
     end
 

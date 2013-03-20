@@ -1,5 +1,5 @@
-require 't3/t3'
+require 't3/t3_gui'
 
 use Rack::Reloader, 0
 
-run Rack::Cascade.new([Rack::File.new("public"), T3])
+run T3::T3Gui

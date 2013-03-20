@@ -5,10 +5,12 @@
   </head>
   <body>
     <h1>Welcome to T3!</h1>
-    <h3>Enter move: <%#= greet_name %></h3>
-    <form method="post" action="/change">
-      <input name="name" type="text">
-      <input type=" submit" value="Submit">
+    <h3>Enter move: <%= @board.spaces %>!</h3>
+    <form method="post" action="/space">
+      <input name="space" type="text">
+      <input type="submit" value="Submit">
     </form>
+    <h3><%= print_board %></h3>
+    <h3><%= @request.cookies["board_spaces"] %></h3>
   </body>
 </html>
