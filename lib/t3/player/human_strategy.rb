@@ -1,11 +1,11 @@
 module T3
   module Player
     class HumanStrategy
-      attr_reader :console_io, :piece
+      attr_reader :prompter, :piece
 
-      def initialize(piece,console_io)
+      def initialize(piece,prompter)
         @piece = piece
-        @console_io = console_io
+        @prompter = prompter
       end
 
       def human?
@@ -13,7 +13,7 @@ module T3
       end
 
       def move
-        @console_io.get.to_i
+        @prompter.human_move
       end
 
     end

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 't3/game_runner'
+require 't3/io'
 
 T3::GameRunner.new.play_game

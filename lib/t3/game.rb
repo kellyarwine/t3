@@ -1,9 +1,9 @@
 module T3
   class Game
-    attr_accessor :game_rules, :validations, :console_io, :board, :configurations, :move
+    attr_accessor :game_rules, :validations, :io, :board, :configurations, :move
 
-    def initialize(console_io,configurations)
-      @console_io = console_io
+    def initialize(io,configurations)
+      @io = io
       @configurations = configurations
     end
 
@@ -52,7 +52,7 @@ module T3
     end
 
     def display_welcome_message
-      @console_io.display_welcome_message
+      @io.display_welcome_message
     end
 
     def game_over?
@@ -60,15 +60,15 @@ module T3
     end
 
     def display_gameboard
-      @console_io.display_gameboard(board.spaces,board.size)
+      @io.display_gameboard(board.spaces,board.size)
     end
 
     def get_move
-      @console_io.display_request_for_move(current_player)
+      @io.display_request_for_move(current_player)
       @move = move_constructor
 
-      if validations.invalid_move?(@move)
-        @console_io.display_invalid_selection
+      if validations.invalid_move?(@move,board)
+        @io.display_invalid_selection
         get_move
       end
     end
@@ -94,11 +94,11 @@ module T3
     end
 
     def display_win
-      @console_io.display_win(game_rules.winning_gamepiece)
+      @io.display_win(game_rules.winning_gamepiece)
     end
 
     def display_draw
-      @console_io.display_draw
+      @io.display_draw
     end
   end
 end

@@ -1,5 +1,8 @@
+require_relative 'board'
+require_relative 'game_runner'
+
 module T3
-  class Io
+  class UiIo
     attr_accessor :input, :output, :gamepiece, :board_row
 
     HUMAN_LABEL = "Human"
@@ -42,7 +45,7 @@ module T3
 
     def display_opponent_prompt
       display("Choose your opponent:\n\n")
-      OPPONENTS.each_with_index { |opponent, i| display("#{i+1}. #{opponent}\n") }
+      OPPONENTS.each_with_index { |opponent,i| display("#{i+1}. #{opponent}\n") }
     end
 
     def display_board_size_prompt(board_sizes)

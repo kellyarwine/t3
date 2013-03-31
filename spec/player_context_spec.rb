@@ -4,10 +4,10 @@ describe T3::Player::PlayerContext do
 
   let(:player_strategy_1) { T3::Player::EasyAiStrategy.new("x")              }
   let(:player_strategy_2) { T3::Player::MinimaxStrategy.new("x",game_rules)  }
-  let(:player_strategy_3) { T3::Player::HumanStrategy.new("x",console_io)    }
+  let(:player_strategy_3) { T3::Player::HumanStrategy.new("x",prompter)      }
   let(:board)             { T3::Board.new(3)                                 }
   let(:game_rules)        { T3::GameRules.new(board)                         }
-  let(:console_io)        { T3::ConsoleIo.new                                }
+  let(:prompter)          { T3::Prompter.new                                 }
   let(:gamepieces)        { ["x","o"]                                        }
   let(:player_context_1)  { T3::Player::PlayerContext.new(player_strategy_1) }
   let(:player_context_2)  { T3::Player::PlayerContext.new(player_strategy_2) }
@@ -36,7 +36,7 @@ describe T3::Player::PlayerContext do
   end
 
   it "should return a move for huamn if no arguments are passed in" do
-    player_strategy_3.console_io.should_receive(:get).and_return("10")
+    player_strategy_3.prompter.should_receive(:human_move).and_return(10)
     player_context_3.move.should == 10
   end
 

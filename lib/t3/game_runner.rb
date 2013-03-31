@@ -1,15 +1,15 @@
-require 't3/console_io'
+require 't3/io'
 require 't3/configurations'
 require 't3/game'
 
 module T3
   class GameRunner
-    attr_accessor :console_io, :game, :configurations
+    attr_accessor :io, :game, :configurations
 
     def initialize
-      @console_io = ConsoleIo.new
-      @configurations = Configurations.new(@console_io)
-      @game = Game.new(@console_io,@configurations)
+      @io = Io.new
+      @configurations = Configurations.new(@io)
+      @game = Game.new(@io,@configurations)
     end
 
     def play_game
@@ -24,13 +24,13 @@ module T3
     end
 
     def play_again?
-      @console_io.display_play_again_prompt
+      @io.display_play_again_prompt
 
-      case @console_io.get.downcase
+      case @io.get.downcase
       when "y" then true
       when "n" then false
       else
-        @console_io.display_invalid_selection
+        @io.display_invalid_selection
         play_again?
       end
     end

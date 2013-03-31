@@ -5,12 +5,48 @@
   </head>
   <body>
     <h1>Welcome to T3!</h1>
-    <h3>Enter move: <%= @board.spaces %>!</h3>
-    <form method="post" action="/space">
-      <input name="space" type="text">
-      <input type="submit" value="Submit">
+    <form method="get" action="/configure">
+      <p>
+        <b>
+          Choose the board size:
+        </b>
+        <br>
+        <input name="size" type="radio" value="3">3x3
+        <br>
+        <input name="size" type="radio" value="4">4x4
+        <br>
+        <input name="size" type="radio" value="5">5x5
+      </p>
+      <p>
+        <b>
+          Choose any letter to be your gamepiece:
+        </b>
+        <br>
+        <input name="gamepiece" type="text">
+      </p>
+      <p>
+        <b>
+          Choose your opponent:
+        </b>
+        <br>
+        <input name="opponent" type="radio" value="easy">Easy AI
+        <br>
+        <input name="opponent" type="radio" value="minimax">Hard AI
+        <br>
+        <input name="opponent" type="radio" value="human">Human Player
+      </p>
+      <p>
+        <b>
+          Choose which player goes first:
+        </b>
+        <br>
+        <input name="first_player" type="radio" value="player_1">You
+        <br>
+        <input name="first_player" type="radio" value="player_2">Your Opponent
+      </p>
+      <p>
+        <input type="submit" value="Submit">
+      </p>
     </form>
-    <h3><%= print_board %></h3>
-    <h3><%= @request.cookies["board_spaces"] %></h3>
   </body>
 </html>

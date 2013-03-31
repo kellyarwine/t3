@@ -4,15 +4,15 @@ describe T3::Player::HumanStrategy do
 
   let(:gamepiece)   { "x"                                                 }
   let(:board)       { T3::Board.new(3)                                    }
-  let(:console_io)  { T3::ConsoleIo.new                                   }
-  let(:subject)     { T3::Player::HumanStrategy.new(gamepiece,console_io) }
+  let(:prompter)    { T3::Prompter.new                                    }
+  let(:subject)     { T3::Player::HumanStrategy.new(gamepiece,prompter)   }
 
   it 'has a piece' do
-    T3::Player::HumanStrategy.new("x",@console_io).piece.should == gamepiece
+    T3::Player::HumanStrategy.new("x",prompter).piece.should == gamepiece
   end
 
-  it "initializes the console_io" do
-    subject.console_io.should be_kind_of(T3::ConsoleIo)
+  it "initializes the io" do
+    subject.prompter.should be_kind_of(T3::Prompter)
   end
 
   it "is a human" do
@@ -24,7 +24,7 @@ describe T3::Player::HumanStrategy do
   end
 
   it "should prompt for a move" do
-    subject.console_io.should_receive(:get).and_return("2")
+    subject.prompter.should_receive(:human_move).and_return(2)
     subject.move.should == 2
   end
 
