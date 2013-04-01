@@ -1,15 +1,17 @@
 require 't3/io'
+require 't3/prompter'
 require 't3/configurations'
 require 't3/game'
 
 module T3
   class GameRunner
-    attr_accessor :io, :game, :configurations
+    attr_accessor :io, :prompter, :game, :configurations
 
     def initialize
       @io = Io.new
-      @configurations = Configurations.new(@io)
-      @game = Game.new(@io,@configurations)
+      @prompter = Prompter.new
+      @configurations = Configurations.new(@prompter)
+      @game = Game.new(@io, @prompter, @configurations)
     end
 
     def play_game

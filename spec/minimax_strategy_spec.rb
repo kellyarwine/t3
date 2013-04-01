@@ -37,7 +37,6 @@ describe T3::Player::MinimaxStrategy do
     subject.move(board,["x","o"]).should == 1
   end
 
-
   it "gets the best move available from a board with 3 available spaces" do
     board.spaces = ["x","o","x","o","x","o","7","8","9"]
   # board.spaces = ["x","o","x",
@@ -116,5 +115,15 @@ describe T3::Player::MinimaxStrategy do
 
     subject.move(board,["x","o"]).should == 1
   end
+
+  it "gets the best move available from a board with 5 available spaces (Anish test)" do
+    board.spaces = ["o","x","o","x","5","6","7","8","9"]
+  # board.spaces = ["o","x","o",
+                  # "x","5","6",
+                  # "7","8","9"]
+
+    subject.move(board,["x","o"]).should == 5
+  end
+
 
 end

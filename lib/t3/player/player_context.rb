@@ -1,5 +1,4 @@
 require 't3/io'
-require 't3/validations'
 require 't3/player/easy_ai_strategy'
 require 't3/player/minimax_strategy'
 require 't3/player/human_strategy'

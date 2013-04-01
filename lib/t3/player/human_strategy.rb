@@ -12,8 +12,8 @@ module T3
         true
       end
 
-      def move
-        @prompter.human_move
+      def move(board)
+        @prompter.human_move(board)
       end
 
     end

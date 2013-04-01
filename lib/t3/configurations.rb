@@ -1,16 +1,17 @@
+require 't3/game_rules'
+require 't3/player/player_context'
+
 module T3
   class Configurations
-    attr_accessor :board, :io, :prompter, :player_1, :player_2, :players, :game_rules, :validations
+    attr_accessor :board, :io, :prompter, :player_1, :player_2, :players, :game_rules
 
     def initialize(prompter)
       @prompter = prompter
-      @prompter = Prompter.new
     end
 
     def configure_game
       build_board
       @game_rules = GameRules.new(@board)
-      @validations = Validations.new
       setup_players
       setup_turn_order
     end
@@ -27,25 +28,14 @@ module T3
 
     def opponent
       case @prompter.opponent
-        when "1" then Player::EasyAiStrategy.new(ai_gamepiece)
-        when "2" then Player::MinimaxStrategy.new(ai_gamepiece,@game_rules)
+        when "1" then Player::EasyAiStrategy.new(@prompter.ai_gamepiece)
+        when "2" then Player::MinimaxStrategy.new(@prompter.ai_gamepiece,@game_rules)
         when "3" then Player::HumanStrategy.new(@prompter.human_gamepiece,@prompter)
       end
     end
 
-    def ai_gamepiece
-      gamepiece = "x"
-
-      if @validations.invalid_gamepiece?(gamepiece)
-        gamepiece = "o"
-      else
-        return gamepiece
-      end
-
-    end
-
     def setup_turn_order
-      case @prompter.turn_order(@players)
+      case @prompter.turn_order
       when "1" then @players
       when "2" then @players.reverse!
       end

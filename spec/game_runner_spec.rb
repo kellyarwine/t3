@@ -7,6 +7,7 @@ describe T3::GameRunner do
 
   it "initializes the io, configurations and game" do
     subject.io.should be_kind_of(T3::Io)
+    subject.prompter.should be_kind_of(T3::Prompter)
     subject.configurations.should be_kind_of(T3::Configurations)
     subject.game.should be_kind_of(T3::Game)
   end

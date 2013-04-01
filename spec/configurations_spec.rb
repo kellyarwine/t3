@@ -2,11 +2,6 @@ require 'spec_helper'
 
 describe T3::Configurations do
 
-  before {
-    subject.validations = validations
-    subject.players = players
-  }
-
   let(:board)       { T3::Board.new(3)                                                              }
   let(:game_rules)  { T3::GameRules.new(board)                                                      }
   let(:validations) { T3::Validations.new                                                           }
@@ -26,7 +21,6 @@ describe T3::Configurations do
     subject.should_receive(:setup_turn_order)
     subject.configure_game
     subject.game_rules.should be_kind_of(T3::GameRules)
-    subject.validations.should be_kind_of(T3::Validations)
   end
 
   it "builds the board" do
@@ -64,26 +58,16 @@ describe T3::Configurations do
     end
   end
 
-  context "#ai_gamepiece" do
-    it "returns a gamepiece for ai player" do
-      subject.validations.gamepieces = []
-      subject.ai_gamepiece.should == "x"
-    end
-
-    it "returns a gamepiece for ais human player" do
-      subject.validations.gamepieces = ["x"]
-      subject.ai_gamepiece.should == "o"
-    end
-  end
-
   context "#setup_turn_order" do
     it "returns an array of two players where player_1 is the first player and player_2 is the second player" do
       subject.prompter.should_receive(:turn_order).and_return("1")
+      subject.players = players
       subject.setup_turn_order.should == [player_1,player_2]
     end
 
     it "returns an array of two players where player_2 is the first player and player_1 is the second player" do
       subject.prompter.should_receive(:turn_order).and_return("2")
+      subject.players = players
       subject.setup_turn_order.should == [player_2,player_1]
     end
   end

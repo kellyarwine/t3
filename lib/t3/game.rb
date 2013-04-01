@@ -1,9 +1,10 @@
 module T3
   class Game
-    attr_accessor :game_rules, :validations, :io, :board, :configurations, :move
+    attr_accessor :game_rules, :io, :prompter, :board, :configurations, :move
 
-    def initialize(io,configurations)
+    def initialize(io,prompter,configurations)
       @io = io
+      @prompter = prompter
       @configurations = configurations
     end
 
@@ -25,10 +26,6 @@ module T3
 
     def game_rules
       @configurations.game_rules
-    end
-
-    def validations
-      @configurations.validations
     end
 
     def current_player
@@ -64,20 +61,10 @@ module T3
     end
 
     def get_move
-      @io.display_request_for_move(current_player)
-      @move = move_constructor
-
-      if validations.invalid_move?(@move,board)
-        @io.display_invalid_selection
-        get_move
-      end
-    end
-
-    def move_constructor
       case current_player.strategy
-        when T3::Player::EasyAiStrategy then current_player.move(board)
-        when T3::Player::MinimaxStrategy then current_player.move(board,[player_2.piece,player_1.piece])
-        when T3::Player::HumanStrategy then current_player.move
+        when T3::Player::EasyAiStrategy then @move = current_player.move(board)
+        when T3::Player::MinimaxStrategy then @move = current_player.move(board,[player_2.piece,player_1.piece])
+        when T3::Player::HumanStrategy then @move = current_player.move(board)
       end
     end
 

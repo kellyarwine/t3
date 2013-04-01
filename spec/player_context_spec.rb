@@ -37,7 +37,7 @@ describe T3::Player::PlayerContext do
 
   it "should return a move for huamn if no arguments are passed in" do
     player_strategy_3.prompter.should_receive(:human_move).and_return(10)
-    player_context_3.move.should == 10
+    player_context_3.move(board).should == 10
   end
 
 end

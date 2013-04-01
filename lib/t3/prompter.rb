@@ -1,16 +1,22 @@
+require 't3/validations'
+
 module T3
   class Prompter
     attr_accessor :io, :validations
 
+    BOARD_SIZE_SELECTIONS = {
+      "1" => 3,
+      "2" => 4,
+      "3" => 5
+    }
     OPPONENT_SELECTIONS = {
       "1" => "Easy AI",
       "2" => "Hard AI",
       "3" => "Human"
     }
-    BOARD_SIZE_SELECTIONS = {
-      "1" => 3,
-      "2" => 4,
-      "3" => 5
+    PLAYER_SELECTIONS = {
+      "1" => "Human",
+      "2" => "Opponent"
     }
 
     def initialize
@@ -57,7 +63,7 @@ module T3
 
     def display_opponent_prompt
       @io.display("Choose your opponent:\n\n")
-      OPPONENT_SELECTIONS.each_with_index { |opponent, i| @io.display("#{i+1}. #{opponent}\n") }
+      OPPONENT_SELECTIONS.each_with_index { |opponent, i| @io.display("#{i+1}. #{opponent[1]}\n") }
     end
 
     def human_gamepiece
@@ -81,25 +87,36 @@ module T3
       @io.display("Choose any letter to be the gamepiece.")
     end
 
-    def turn_order(players)
-      turn_order_selection = display_and_get_turn_order(players)
+    def ai_gamepiece
+      gamepiece = "x"
 
-      while @validations.invalid_turn_order_selection?(turn_order_selection,players)
+      if @validations.invalid_gamepiece?(gamepiece)
+        gamepiece = "o"
+      else
+        return gamepiece
+      end
+
+    end
+
+    def turn_order
+      turn_order_selection = display_and_get_turn_order
+
+      while @validations.invalid_turn_order_selection?(turn_order_selection,PLAYER_SELECTIONS)
         @io.display_invalid_selection
-        turn_order_selection = display_and_get_turn_order(players)
+        turn_order_selection = display_and_get_turn_order
       end
 
       return turn_order_selection
     end
 
-    def display_and_get_turn_order(players)
-      display_turn_order_prompt(players)
+    def display_and_get_turn_order
+      display_turn_order_prompt
       @io.get
     end
 
-    def display_turn_order_prompt(players)
+    def display_turn_order_prompt
       @io.display("Choose which player goes first:\n\n")
-      players.each_with_index { |player, i| @io.display("#{i+1}. #{@io.player_label(player)}\n") }
+      PLAYER_SELECTIONS.each_with_index { |player, i| @io.display("#{i+1}. #{player[1]}\n") }
     end
 
     def human_move(board)

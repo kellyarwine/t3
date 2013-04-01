@@ -25,7 +25,7 @@ describe T3::Player::HumanStrategy do
 
   it "should prompt for a move" do
     subject.prompter.should_receive(:human_move).and_return(2)
-    subject.move.should == 2
+    subject.move(board).should == 2
   end
 
 end

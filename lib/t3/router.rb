@@ -1,4 +1,5 @@
 require 't3/game_runner'
+require 't3/ui_prompter'
 
 module T3
   class Router
@@ -13,14 +14,14 @@ module T3
         end
       when "/configure"
         Rack::Response.new do |response|
-          require 'pry'
-          binding.pry
-          board
           config_hash = Rack::Utils.parse_query(@request.env["QUERY_STRING"])
-          board(config_hash["size"].to_i)
-          config_hash["gamepiece"]
-          config_hash["opponent"]
-          config_hash["first_player"]
+          @prompter.get_board_size(config_hash["size"].to_i)
+          @prompter.get_human_gamepiece(config_hash["gamepiece"])
+          @prompter.get_opponent(config_hash["opponent"])
+          @prompter.get_turn_order(config_hash["first_player"])
+          build_board
+          setup_players
+          setup_turn_order
           response.redirect("/")
         end
       when "/space"
@@ -34,22 +35,22 @@ module T3
       end
     end
 
-    def initialize(input,output)
-      @io = Io.new(input,output)
-      @configurations = Configurations.new(@io)
-      @game_runner = T3::GameRunner.new(input,output)
+    def initialize
+      @prompter = UiPrompter.new
+      @configurations = Configurations.new(@prompter)
+      @game_runner = T3::GameRunner.new
     end
 
-    def board(size)
-      @configurations.build_board = Board.new(size)
+    def build_board
+      @configurations.build_board
     end
 
-    def player_1
-      @human = HumanStrategy.new(piece,@io)
+    def setup_players
+      @configurations.setup_players
     end
 
-    def_player_2
-
+    def setup_turn_order
+      @configurations.setup_turn_order
     end
 
     def render(template)

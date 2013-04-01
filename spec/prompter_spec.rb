@@ -82,14 +82,14 @@ describe T3::Prompter do
     it "returns a turn order selection where player_1 will go first" do
       subject.io.should_receive(:display).exactly(3).times
       subject.io.should_receive(:get).and_return("1")
-      subject.turn_order(players).should == "1"
+      subject.turn_order.should == "1"
     end
 
     it "returns a turn order selection where player_2 will go first after two invalid selections are made" do
       subject.io.should_receive(:display).exactly(9).times
       subject.io.should_receive(:display_invalid_selection).exactly(2).times
       subject.io.should_receive(:get).and_return(".","3","2")
-      subject.turn_order(players).should == "2"
+      subject.turn_order.should == "2"
     end
   end
 
@@ -107,6 +107,18 @@ describe T3::Prompter do
       subject.io.should_receive(:display_invalid_selection).exactly(2).times
       subject.io.should_receive(:get).and_return("9","","7")
       subject.human_move(board).should == 7
+    end
+  end
+
+  context "#ai_gamepiece" do
+    it "returns a gamepiece for ai player" do
+      subject.validations.gamepieces = []
+      subject.ai_gamepiece.should == "x"
+    end
+
+    it "returns a gamepiece for ais human player" do
+      subject.validations.gamepieces = ["x"]
+      subject.ai_gamepiece.should == "o"
     end
   end
 
