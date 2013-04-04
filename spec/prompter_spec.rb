@@ -84,7 +84,7 @@ describe Console::Prompter do
     it "prompts for a human gamepiece when the opponent is a human" do
       subject.io.should_receive(:display)
       subject.io.should_receive(:get).and_return("r")
-      subject.opponent_gamepiece(player_1) == "r"
+      subject.opponent_gamepiece("3") == "r"
     end
 
     it "returns an ai gamepiece when the opponent is a easy ai player" do

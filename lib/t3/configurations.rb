@@ -20,15 +20,15 @@ module T3
 
     def setup_players(opponent_selection, human_gamepiece, opponent_gamepiece)
       @player_1 = Player::Human.new(human_gamepiece)
-      @player_2 = opponent(opponent_selection, human_gamepiece, opponent_gamepiece)
+      @player_2 = opponent(opponent_selection, opponent_gamepiece)
       @players = [@player_1,@player_2]
     end
 
-    def opponent(opponent_selection, human_gamepiece, opponent_gamepiece)
+    def opponent(opponent_selection, opponent_gamepiece)
       case opponent_selection
         when "1" then Player::EasyAi.new(opponent_gamepiece)
         when "2" then Player::Minimax.new(opponent_gamepiece, @game_rules)
-        when "3" then Player::Human.new(human_gamepiece)
+        when "3" then Player::Human.new(opponent_gamepiece)
       end
     end
 

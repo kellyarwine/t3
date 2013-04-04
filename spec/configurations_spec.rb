@@ -29,15 +29,15 @@ describe T3::Configurations do
 
   context "#opponent" do
     it "should return a human opponent" do
-      subject.opponent("3", "x", "o").should be_kind_of(T3::Player::Human)
+      subject.opponent("3", "o").should be_kind_of(T3::Player::Human)
     end
 
     it "should return an easy ai opponent" do
-      subject.opponent("1", "x", "o").should be_kind_of(T3::Player::EasyAi)
+      subject.opponent("1", "o").should be_kind_of(T3::Player::EasyAi)
     end
 
     it "should return a hard ai opponent" do
-      subject.opponent("2", "x", "o").should be_kind_of(T3::Player::Minimax)
+      subject.opponent("2", "o").should be_kind_of(T3::Player::Minimax)
     end
   end
 

@@ -92,8 +92,8 @@ module Console
       @io.display("Choose any letter to be the gamepiece.")
     end
 
-    def opponent_gamepiece(opponent)
-       opponent.instance_of?(T3::Player::Human) ? human_gamepiece : ai_gamepiece
+    def opponent_gamepiece(opponent_selection)
+       OPPONENT_SELECTIONS[opponent_selection] == "Human" ? human_gamepiece : ai_gamepiece
     end
 
     def ai_gamepiece
