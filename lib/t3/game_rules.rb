@@ -8,16 +8,22 @@ module T3
       @board = board
     end
 
-    def game_over?
-      board_full? || win_game?
-    end
-
-    def board_full?
-      @board.spaces.select { |space| space =~ /\d/ } == []
+    def game_state
+      if win_game?
+        winning_gamepiece
+      elsif board_full?
+        "draw"
+      else
+        ""
+      end
     end
 
     def win_game?
       winning_gamepiece != nil
+    end
+
+    def board_full?
+      @board.spaces.select { |space| space =~ /\d/ } == []
     end
 
     def winning_gamepiece

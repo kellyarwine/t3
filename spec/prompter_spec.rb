@@ -1,14 +1,16 @@
 require 'spec_helper'
 
-describe T3::Prompter do
+describe Console::Prompter do
 
-  let(:io)           { T3::Io.new                                                           }
-  let(:board)        { T3::Board.new(4)                                                     }
-  let(:validations)  { T3::Validations.new                                                  }
-  let(:player_1)     { T3::Player::PlayerContext.new(T3::Player::HumanStrategy.new("x",io)) }
-  let(:player_2)     { T3::Player::PlayerContext.new(T3::Player::EasyAiStrategy.new("o"))   }
-  let(:players)      { [player_1,player_2]                                                  }
-  let(:board)        { T3::Board.new(3)                                                     }
+  let(:io)          { Console::Io.new                           }
+  let(:board)       { T3::Board.new(4)                          }
+  let(:validations) { T3::Validations.new                       }
+  let(:game_rules)  { T3::GameRules.new(board)                  }
+  let(:player_1)    { T3::Player::Human.new("x")                }
+  let(:player_2)    { T3::Player::EasyAi.new("o")               }
+  let(:player_3)    { T3::Player::Minimax.new("o", game_rules)  }
+  let(:players)     { [player_1,player_2]                       }
+  let(:subject)     { Console::Prompter.new(io)                 }
 
   context "#board_size" do
     it "returns the board size" do
@@ -78,6 +80,34 @@ describe T3::Prompter do
     end
   end
 
+  context "#opponent_gamepiece" do
+    it "prompts for a human gamepiece when the opponent is a human" do
+      subject.io.should_receive(:display)
+      subject.io.should_receive(:get).and_return("r")
+      subject.opponent_gamepiece(player_1) == "r"
+    end
+
+    it "returns an ai gamepiece when the opponent is a easy ai player" do
+      subject.opponent_gamepiece(player_2).should == "x"
+    end
+
+    it "returns an ai gamepiece when the opponent is a hard ai player" do
+      subject.opponent_gamepiece(player_3).should == "x"
+    end
+  end
+
+  context "#ai_gamepiece" do
+    it "returns a gamepiece for ai player" do
+      subject.validations.gamepieces = []
+      subject.ai_gamepiece.should == "x"
+    end
+
+    it "returns a gamepiece for ais human player" do
+      subject.validations.gamepieces = ["x"]
+      subject.ai_gamepiece.should == "o"
+    end
+  end
+
   context "#turn_order" do
     it "returns a turn order selection where player_1 will go first" do
       subject.io.should_receive(:display).exactly(3).times
@@ -110,15 +140,18 @@ describe T3::Prompter do
     end
   end
 
-  context "#ai_gamepiece" do
-    it "returns a gamepiece for ai player" do
-      subject.validations.gamepieces = []
-      subject.ai_gamepiece.should == "x"
+  context "#play_again?" do
+    it "returns a turn order selection where player_1 will go first" do
+      subject.io.should_receive(:display).exactly(1).times
+      subject.io.should_receive(:get).and_return("y")
+      subject.play_again? .should == true
     end
 
-    it "returns a gamepiece for ais human player" do
-      subject.validations.gamepieces = ["x"]
-      subject.ai_gamepiece.should == "o"
+    it "returns a turn order selection where player_2 will go first after two invalid selections are made" do
+      subject.io.should_receive(:display).exactly(3).times
+      subject.io.should_receive(:display_invalid_selection).exactly(2).times
+      subject.io.should_receive(:get).and_return(".","3","n")
+      subject.play_again?.should == false
     end
   end
 

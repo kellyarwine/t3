@@ -1,0 +1,63 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>T3 Gameboard</title>
+    <link rel="stylesheet" href="stylesheets/application.css" type="text/css" charset="utf-8">
+  </head>
+  <body>
+    <div id="board">
+      <form method="get" action="/board">
+        <table align="center">
+          <tr id="row1" align="center">
+            <td class="square">
+              <%= board_spaces(0) %>
+              <input name="board" type="radio" value="1">
+            </td>
+            <td class="square v">
+              <%= board_spaces(1) %>
+              <input name="board" type="radio" value="2">
+            </td>
+            <td class="square">
+              <%= board_spaces.spaces[2] %>
+              <input name="board" type="radio" value="3">
+            </td>
+          </tr>
+          <tr id="row2" align="center">
+            <td class="square h">
+            <%= board_spaces.spaces[3] %>
+              <input name="board" type="radio" value="4">
+            </td>
+            <td class="square v h">
+              <%= board_spaces.spaces[4] %>
+              <input name="board" type="radio" value="5">
+            </td>
+            <td class="square h">
+              <%= board_spaces.spaces[5] %>
+              <input name="board" type="radio" value="6">
+            </td>
+          </tr>
+          <tr id="row3" align="center">
+            <td class="square">
+              <%= board_spaces.spaces[6] %>
+              <input name="board" type="radio" value="7">
+            </td>
+            <td class="square v">
+              <%= board_spaces.spaces[7] %>
+              <input name="board" type="radio" value="8">
+            </td>
+            <td class="square">
+              <%= board_spaces.spaces[8] %>
+              <input name="board" type="radio" value="9">
+            </td>
+          </tr>
+          <tr align="center">
+            <td>
+              <br>
+              <input type="submit" value="Submit">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe T3::Player::MinimaxStrategy do
+describe T3::Player::Minimax do
 
-  let(:gamepiece)           { "x"                                       }
-  let(:board)               { T3::Board.new(3)                          }
-  let(:game_rules)          { T3::GameRules.new(board)                  }
-  let(:subject)             { T3::Player::MinimaxStrategy.new(gamepiece,game_rules) }
+  let(:gamepiece)   { "x"                                           }
+  let(:board)       { T3::Board.new(3)                              }
+  let(:game_rules)  { T3::GameRules.new(board)                      }
+  let(:subject)     { T3::Player::Minimax.new(gamepiece,game_rules) }
 
   it 'has a piece' do
-    T3::Player::MinimaxStrategy.new("x",game_rules).piece.should == gamepiece
+    T3::Player::Minimax.new("x",game_rules).piece.should == gamepiece
   end
 
   it "initializes game rules" do

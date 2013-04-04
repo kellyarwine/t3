@@ -9,15 +9,15 @@ module T3
       @validations = T3::Validations.new
     end
 
-    def get_board_size(size)
+    def board_size
       @board_size ||= size
     end
 
-    def get_opponent(opponent)
+    def set_opponent(opponent)
       @opponent ||= opponent
     end
 
-    def get_human_gamepiece(human_gamepiece)
+    def set_human_gamepiece(human_gamepiece)
       @human_gamepiece ||= human_gamepiece
     end
 
@@ -32,7 +32,7 @@ module T3
 
     end
 
-    def get_turn_order(turn_order)
+    def set_turn_order(turn_order)
       @turn_order ||= turn_order
     end
 

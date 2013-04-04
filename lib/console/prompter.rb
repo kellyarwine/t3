@@ -1,6 +1,6 @@
 require 't3/validations'
 
-module T3
+module Console
   class Prompter
     attr_accessor :io, :validations
 
@@ -19,12 +19,17 @@ module T3
       "2" => "Opponent"
     }
 
-    def initialize
-      @io = T3::Io.new
+    PLAY_AGAIN_SELECTIONS = {
+      "y" => true,
+      "n" => false
+    }
+
+    def initialize(io)
+      @io = io
       @validations = T3::Validations.new
     end
 
-   def board_size
+    def board_size
       board_size_selection = display_and_get_board_size
 
       while @validations.invalid_selection?(board_size_selection,BOARD_SIZE_SELECTIONS)
@@ -87,6 +92,10 @@ module T3
       @io.display("Choose any letter to be the gamepiece.")
     end
 
+    def opponent_gamepiece(opponent)
+       opponent.instance_of?(T3::Player::Human) ? human_gamepiece : ai_gamepiece
+    end
+
     def ai_gamepiece
       gamepiece = "x"
 
@@ -137,6 +146,26 @@ module T3
 
     def display_human_move_prompt
       @io.display("Human, please enter a move (1-9):")
+    end
+
+    def play_again?
+      play_again_selection = display_and_get_play_again
+
+      while @validations.invalid_selection?(play_again_selection,PLAY_AGAIN_SELECTIONS)
+        @io.display_invalid_selection
+        play_again_selection = display_and_get_play_again
+      end
+
+      return PLAY_AGAIN_SELECTIONS[play_again_selection]
+    end
+
+    def display_and_get_play_again
+      display_play_again_prompt
+      @io.get.downcase
+    end
+
+    def display_play_again_prompt
+      @io.display_play_again_prompt
     end
 
   end

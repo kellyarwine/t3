@@ -1,0 +1,14 @@
+.square{
+    width:100px;
+    height:100px;
+}
+
+.v{
+    border-left:4px solid #000;
+    border-right:4px solid #000;
+}
+
+.h{
+    border-top:4px solid #000;
+    border-bottom:4px solid #000;
+}

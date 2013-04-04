@@ -9,25 +9,25 @@ describe T3::GameRules do
       subject.board.should be_kind_of(T3::Board)
     end
 
-    context "#game_over?" do
-      it "returns true when board is full and there are no wins" do
-        subject.board.spaces = ["x","x","o","o","x","x","x","o","o"]
-        subject.game_over?.should be_true
-      end
-
-      it "returns false when board is not full and there are no wins" do
+    context "#game_state" do
+      it "returns nil when board is not full and there are no wins" do
         subject.board.spaces = ["x","2","o","o","x","x","x","o","o"]
-        subject.game_over?.should be_false
+        subject.game_state.should == ""
       end
 
-      it "returns true when board is not full and there are wins" do
+      it "returns 'draw' when board is full and there are no wins" do
+        subject.board.spaces = ["x","x","o","o","x","x","x","o","o"]
+        subject.game_state.should == "draw"
+      end
+
+      it "returns the winning gamepiece when board is not full and there are wins" do
         subject.board.spaces = ["x","2","o","o","x","o","o","o","x"]
-        subject.game_over?.should be_true
+        subject.game_state.should == "x"
       end
 
-      it "returns true when board is full and there are wins" do
+      it "returns the winning gamepiece when board is full and there are wins" do
         subject.board.spaces = ["x","o","o","o","x","o","x","o","x"]
-        subject.game_over?.should be_true
+        subject.game_state.should == "x"
       end
     end
 
@@ -126,16 +126,26 @@ describe T3::GameRules do
     let(:board) 				{ T3::Board.new(4) }
     let(:subject) 			{ T3::GameRules.new(board) }
 
-    context "#game_over?" do
-      it "returns true when board is full and there are no wins" do
+    context "#game_state" do
+      it "returns 'draw' when board is full and there are no wins" do
         subject.board.spaces = ["x","x","o","o","o","o","x","x","o","x","o","x","o","x","o","o"]
-        subject.game_over?.should be_true
+        subject.game_state.should == "draw"
+      end
+
+      it "returns the winning gamepiece when the board is full and there is a win" do
+        subject.board.spaces = ["x","x","x","x","o","o","x","x","o","x","o","x","o","x","o","o"]
+        subject.game_state.should == "x"
+      end
+
+     it "returns nil when the board is not full and there are no wins" do
+        subject.board.spaces = ["x","x","x","4","o","o","x","x","o","x","o","x","o","x","o","o"]
+        subject.game_state.should == ""
       end
     end
 
     context "#winning_gamepiece" do
       it "returns x when there are 4 x's in a diagonal" do
-        board.spaces = ["x","o","x","o","x","o","x","o","x","x","o","x","x","x","o","x"]			
+        board.spaces = ["x","o","x","o","x","o","x","o","x","x","o","x","x","x","o","x"]
         subject.winning_gamepiece.should == "x"
       end
     end
@@ -165,10 +175,20 @@ describe T3::GameRules do
     let(:board) 				{ T3::Board.new(5) }
     let(:subject) 			{ T3::GameRules.new(board) }
 
-    context "#game_over?" do
-      it "returns true when board is full and there are no wins" do
-        subject.board.spaces = ["x","x","o","o","x","o","o","x","x","o","x","o","x","o","x","o","o","x","o","x","o","x","o","x","o"]
-        subject.game_over?.should be_true
+    context "#game_state" do
+      it "returns 'draw' when board is full and there are no wins" do
+        subject.board.spaces = ["x","x","o","o","o","o","x","x","o","x","o","x","o","x","o","o","o","o","x","o","x","o","o","x","o"]
+        subject.game_state.should == "draw"
+      end
+
+      it "returns the winning gamepiece when the board is full and there is a win" do
+        subject.board.spaces = ["x","x","x","x","x","o","x","x","o","x","o","x","o","x","o","o","o","o","x","o","x","o","o","x","o"]
+        subject.game_state.should == "x"
+      end
+
+     it "returns nil when the board is not full and there are no wins" do
+        subject.board.spaces = ["x","x","o","o","5","o","x","x","o","x","o","x","o","x","o","o","o","o","x","o","x","o","o","x","o"]
+        subject.game_state.should == ""
       end
     end
 

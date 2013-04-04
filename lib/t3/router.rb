@@ -15,17 +15,18 @@ module T3
       when "/configure"
         Rack::Response.new do |response|
           config_hash = Rack::Utils.parse_query(@request.env["QUERY_STRING"])
-          @prompter.get_board_size(config_hash["size"].to_i)
-          @prompter.get_human_gamepiece(config_hash["gamepiece"])
-          @prompter.get_opponent(config_hash["opponent"])
-          @prompter.get_turn_order(config_hash["first_player"])
+          @prompter.set_board_size(config_hash["size"].to_i)
+          @prompter.set_human_gamepiece(config_hash["gamepiece"])
+          @prompter.set_opponent(config_hash["opponent"])
+          @prompter.set_turn_order(config_hash["first_player"])
           build_board
           setup_players
           setup_turn_order
           response.redirect("/")
         end
-      when "/space"
+      when "/board"
         Rack::Response.new do |response|
+          @configurations.board.place_move("x",config_hash["board"].to_i)
           response.redirect("/" + Rack::Utils.build_query(
                                     spaces: @board.spaces
                                   ))
@@ -51,6 +52,10 @@ module T3
 
     def setup_turn_order
       @configurations.setup_turn_order
+    end
+
+    def board_spaces(space)
+      @configurations.board.spaces[space]
     end
 
     def render(template)

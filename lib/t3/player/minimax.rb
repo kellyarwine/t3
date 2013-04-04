@@ -1,6 +1,6 @@
 module T3
   module Player
-    class MinimaxStrategy
+    class Minimax
       RESET_SCORE_VALUE = 0
       DRAW_SCORE_VALUE = 0.0
       WIN_SCORE_VALUE = 1.0
@@ -8,7 +8,7 @@ module T3
 
       attr_accessor :piece, :game_rules
 
-      def initialize(piece,game_rules)
+      def initialize(piece, game_rules)
         @piece = piece
         @game_rules = game_rules
       end
@@ -51,7 +51,7 @@ module T3
       def score_board(board,gamepieces,depth)
         scores = Array.new
 
-        if @game_rules.game_over?
+        if @game_rules.game_state != ""
           score = score_win(depth)
         else
           scores = minimax(board,gamepieces.reverse,depth) if depth <= maximum_depth(@available_spaces_original_length)

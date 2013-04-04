@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe T3::Io do
+describe Console::Io do
 
-  let(:player_1)  { double(:EasyAIStrategy, human?: false, piece: "x") }
-  let(:player_2)  { double(:HumanStrategy, human?: true, piece: "o")   }
+  let(:player_1)  { double(:EasyAI, human?: false, piece: "x") }
+  let(:player_2)  { double(:Human, human?: true, piece: "o")   }
 
   it "has an input and output" do
     subject.input.should be_kind_of(IO)

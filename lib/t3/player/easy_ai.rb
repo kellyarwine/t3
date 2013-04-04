@@ -1,6 +1,6 @@
 module T3
   module Player
-    class EasyAiStrategy
+    class EasyAi
       attr_reader :piece
 
       def initialize(piece)
